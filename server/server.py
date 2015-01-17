@@ -25,6 +25,10 @@ def home():
     d['signed_in'] = True
     d['username'] = session['username']
     d['api_key'] = User.get_api_key(d['username'])
+    url = "https://cloud.digitalocean.com/v2/droplets" 
+    headers = {"Authorization": "Bearer " + session["access_token"]} 
+    droplets = request.post(url, headers).text
+    print droplets
     return render_template('home.html', d=d)
 
 @app.route('/logout')
