@@ -8,6 +8,7 @@ from random import random
 from models.users import User
 from models.data import Data
 import secrets
+import setup
 
 app = Flask(__name__)
 db = MongoClient().spinup
@@ -94,6 +95,10 @@ def snapshot():
     for droplet in my_droplets:
         if droplet.name == servername:
             droplet.take_snapshot(snapshot_name="SPINUP")
+
+@app.route('/install/<api_key>')
+def install(api_key):
+    return setup.get_file(api_key)
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])
