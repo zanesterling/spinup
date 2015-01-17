@@ -66,6 +66,7 @@ def oauth_callback():
 
 @app.route('/configure', methods=['GET']) 
 def configure_droplet():
+    d = {}
     if not 'username' in session or not User.user_exists(session['username']):
         d['signed_in'] = False
         d['client_id'] = secrets.CLIENT_ID
@@ -74,6 +75,7 @@ def configure_droplet():
         return render_template("login.html", d=d)
     d['username'] = session['username']
     d['droplet'] = request.args['droplet']
+    d['dropletname'] = request.args['name']
     return render_template('configure.html', d=d)
 
 # daemon interaction
