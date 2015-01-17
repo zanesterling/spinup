@@ -73,7 +73,13 @@ def service():
     else: 
         return 
 
-    print data
+    jdata = json.loads(data)
+    for piece in jdata:
+        new_data = Data(
+                timestamp=piece['timestamp'],
+                payload = piece['data'],
+                api_key = api)
+        new_data.put()
     return 'OK'
 
 @app.route('/stats', methods=['POST'])

@@ -7,16 +7,16 @@ client = MongoClient()
 db = client.spinup
 
 class Data():
-    def __init__(self, timestamp, payload, datatype=None):
+    def __init__(self, timestamp, payload, api_key, datatype=None):
         self.payload = payload
         self.datatype = datatype
         self.timestamp = datetime.strptime(timestamp, "%m:%d:%y:%H:%M:%S")
-        self.uid = "123456789"
+        self.api_key = api_key
 
     def put(self):
         doc = {"datatype": self.datatype,
                "timestamp": self.timestamp,
-               "uid":self.uid 
+               "api_key":self.api_key 
                }
         for key in self.payload:
             if not key in doc:
@@ -27,8 +27,8 @@ class Data():
         db.data.insert(doc)
     
     @staticmethod
-    def get(uid, number = None):
-        search_specs = {"uid": uid}
+    def get(api_key, number = None):
+        search_specs = {"api_key": api_key}
         return db.data.find(spec = search_specs).sort("timestamp", pymongo.DESCENDING )
         
 
