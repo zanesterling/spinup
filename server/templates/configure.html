@@ -1,6 +1,13 @@
 {% include 'header.html' %}
 	<h1>Configure {{d['dropletname']}} as the image</h1>
-    
+        
     <h3>Step 1: run the script below </h3>
-    <div class="well">$ some script </div>
+    <div>This will set up our daemon on your child droplet.</div>
+    <pre>$ some script </pre>
+
+    <h3>Step 2: Click the button below when you're done!</h3> 
+    <div>This will let us take a snapshot of your server 
+    so that we can replicate it. Warning: this will cause your droplet to restart.</div> 
+    
+    <a href="/snapshot?dropletname={{d['dropletname']}}"><button type="button" class="btn btn-success">Done</button></a> 
 {% include 'footer.html' %}

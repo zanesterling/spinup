@@ -73,6 +73,7 @@ def configure_droplet():
         d['callback_url'] = secrets.CALLBACK
         print d
         return render_template("login.html", d=d)
+    d['signed_in'] = True
     d['username'] = session['username']
     d['droplet'] = request.args['droplet']
     d['dropletname'] = request.args['name']
