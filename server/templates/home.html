@@ -1,16 +1,6 @@
 {% include 'header.html' %}
 	<h1>SpinUp</h1>
     <div class="alert alert-info" role="alert">Api key: {{d['api_key']}}</div>
-    <br>
-    {% if d['signed_in'] %}
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('#logout').css('display', 'block');
-                $('#stats').css('display', 'block');
-                $('#name').html("Signed in as {{d['username']}}");
-            });
-        </script>
-    {% endif %}
     
     {% if not d['signed_in'] %}
         <img src="{{url_for('static', filename='img/replicating.png')}}">
