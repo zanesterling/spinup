@@ -10,8 +10,8 @@
     <script src='/static/stats.js'></script>
 
     <h1>Stats</h1>
-    {% for dataset in d['datasets'] %}
-        {{ dataset['key'] }} <br>
+    {% for ds_key in d['datasets'].keys() %}
+        {{ ds_key }} <br>
         <svg style='border:1px solid black' class='kv-display' width=100% height=200 /> <br><br>
     {% endfor %}
 {% include 'footer.html' %}

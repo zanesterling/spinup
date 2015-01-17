@@ -7,7 +7,7 @@ $(document).ready(function() {
         // add nodes for data
         d3.select(svg_d)
             .selectAll('circle')
-            .data(datasets[svg_i]['data'])
+            .data(datasets[Object.keys(datasets)[svg_i]])
             .enter()
             .append('circle')
                 .attr('cx', function(d, i) {

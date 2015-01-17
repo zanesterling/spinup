@@ -5,6 +5,7 @@ import json
 import digitalocean
 from random import random
 import time
+from datetime import datetime
 
 from models.users import User
 from models.data import Data
@@ -152,14 +153,28 @@ def stats():
     d = {}
     d['logged_in'] = ('username' in session)
 
-    # randomly generate a debug dataset
-    d['datasets'] = []
-    for j in range(3):
-        dataset = {'key': 'Datafeed name'}
-        dataset['data'] = []
-        for i in range(25):
-            dataset['data'].append(random() * 100)
-        d['datasets'].append(dataset)
+    # fetch dataset from the past month
+    api_key = User.get_api_key(session['username'])
+    last_month = datetime.now()
+    last_month = last_month.replace(month=((last_month.month - 2) % 12 + 1))
+    if last_month.month == 12: # if we looped a year, decrement the year
+        last_month = last_month.replace(year=(last_month.year - 1))
+    data = Data.get(api_key, start_time=last_month)
+
+    # sort data into appropriate streams
+    d['datasets'] = {}
+    for i in range(min(data.count(), 45)):
+        datum = data.next()
+        for k,v in datum.items():
+            # skip built-in keys
+            if k in ['datatype', 'timestamp', 'api_key', '_id']:
+                continue
+
+            k = k.encode('ascii', 'ignore')
+            if k not in d['datasets']:
+                d['datasets'][k] = []
+            d['datasets'][k].append(v)
+
     return render_template('stats.html', d=d)
 
 def spinup(): 
