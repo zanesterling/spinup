@@ -24,8 +24,7 @@ class User():
 
     @staticmethod
     def get(name): 
-        search_specs = {"name": name}
-        return db.users.find_one({spec: search_specs})
+        return db.users.find_one({"name":name})
 
     @staticmethod
     def user_exists(name):

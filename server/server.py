@@ -1,7 +1,8 @@
-from flask import Flask, session, request, session,  render_template
+from flask import Flask, url_for, redirect,  session, request, session,  render_template
 from pymongo import MongoClient
 import requests
-from models import users, data
+from models.users import User
+from models.data import Data
 import json
 
 app = Flask(__name__)
@@ -17,18 +18,24 @@ CALLBACK = 'http://104.131.75.88:9001/callback'
 def home():
     d = {}
     if not 'username' in session:
-        d['logged_in'] = False
+        d['signed_in'] = False
         return render_template("login.html", d=d)
     
     if 'username' in session and not User.user_exists(session['username']):
         return render_template("login.html", d=d)
 
-    d['logged_in'] = True
+    d['signed_in'] = True
     d['username'] = session['username']
     return render_template('home.html', d=d)
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
+    
+
 @app.route('/callback', methods=['GET', 'POST'])
-def authenticate():
+def oauth_callback():
     code = request.args['code']
     url =   ("https://cloud.digitalocean.com/v1/oauth/token"
     "?client_id=%(client_id)s"
@@ -39,10 +46,13 @@ def authenticate():
                                               "code":code,
                                               "callback_URL": CALLBACK}
     r = requests.post(url).text
-    response_dict = json.loads(response)
+    response_dict = json.loads(r)
     if 'access_token' in response_dict:
+        session['access_token'] = response_dict['access_token']
         session['username'] = response_dict["info"]["name"]
-    return r.text
+        new_user = User(access_token = session['access_token'], name=session['username']) 
+        new_user.put()
+    return redirect(url_for('home')) 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

@@ -1,7 +1,9 @@
 <html>
 <head>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"> 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <title>SpinUp</title>
+
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -19,10 +21,25 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <p id="name" class="navbar-text navbar-right"></p>
                 <ul style="font-size:15px;" class="nav navbar-nav navbar-right">
-                    <li>
+                    
+
+                    <li class="nav_link">
+                        <a id="logout" style="display:none" href="/logout">Logout</a>
+
+                    </li>
+                
+                    <li class="nav_link">
+                        <a id="login" style="display:none" href="/login">Logout</a>
+
+                    </li>
+                    
+                    <li class="nav_link">
+                        <a href="/">Home</a>
                     </li>
                 </ul>
+
             </div>
             <!-- /.navbar-collapse -->
         </div>
