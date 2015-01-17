@@ -25,7 +25,8 @@ def authenticate():
     "redirect_uri=%(callback_URL)s") %{'client_id': CLIENT_ID, "client_secret": CLIENT_SECRET,
                                               "code":code,
                                               "callback_URL": CALLBACK}
-    return url
+    r = requests.post(url)
+    print r.text
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
