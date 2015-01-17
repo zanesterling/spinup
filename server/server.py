@@ -121,9 +121,13 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
-    d['datasets'] = [[]]
-    for i in range(25):
-        d['datasets'][0].append(random() * 100)
+    d['datasets'] = []
+    for j in range(3):
+        dataset = {'key': 'Datafeed name'}
+        dataset['data'] = []
+        for i in range(25):
+            dataset['data'].append(random() * 100)
+        d['datasets'].append(dataset)
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':
