@@ -1,9 +1,26 @@
-from flask import Flask
+from flask import Flask, request
 from pymongo import MongoClient
 from urllib2 import urlopen
 
 app = Flask(__name__)
 db = MongoClient().loadBalancer
+
+@app.route('/service', methods=['POST'])
+def service():
+	data = request.form
+
+	if data['type'] == 'add-server':
+		# add a server to the stored list
+		server = {'url': data['url']}
+		db.servers.insert(server)
+		return 'success'
+	elif data['type'] == 'rmv-server':
+		# remove a server from the stored list
+		server = {'url': data['url']}
+		db.servers.remove(server)
+		return 'success'
+
+	return 'command not supported: ' + data['type']
 
 # note: only does GET requests
 @app.route('/', defaults={'path': ''})
@@ -23,7 +40,7 @@ def catch_all(path):
 
 # returns next server to be forwarded to
 def getNextServer():
-	servers = [server for server in  db.servers.find()]
+	servers = [server for server in db.servers.find()]
 
 	# get next server
 	serverIndex = db.config.find_one()['serverIndex']
