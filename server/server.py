@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, session, request, render_template
 from pymongo import MongoClient
 
 app = Flask(__name__)
@@ -9,6 +9,10 @@ db = MongoClient().spinup
 def home():
 	d = {'signed_in': False} # TODO
 	return render_template('home.html', d=d)
+
+@app.route('/callback', methods=['GET', 'POST'])
+def authenticate():
+    return 'yo'
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
