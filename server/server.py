@@ -82,9 +82,14 @@ def service():
         new_data.put()
     return 'OK'
 
-@app.route('/stats', methods=['POST'])
+@app.route('/stats')
 def stats():
-    return render_template('stats.html')
+    if not 'username' in session:
+        return redirect(url_for('home'))
+
+    d = {}
+    d['logged_in'] = ('username' in session)
+    return render_template('stats.html', d=d)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 9001, debug=True)
