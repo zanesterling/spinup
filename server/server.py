@@ -159,16 +159,22 @@ def stats():
     last_month = last_month.replace(month=((last_month.month - 2) % 12 + 1))
     if last_month.month == 12: # if we looped a year, decrement the year
         last_month = last_month.replace(year=(last_month.year - 1))
-    data = db.data.find({'api_key': api_key, 'timestamp': {'$gte': last_month}})
+    data = Data.get(api_key, start_time=last_month)
 
     # sort data into appropriate streams
     d['datasets'] = {}
+    for i in range(min(data.count(), 45)):
+        datum = data.next()
+        for k,v in datum.items():
+            # skip built-in keys
+            if k in ['datatype', 'timestamp', 'api_key', '_id']:
+                continue
 
-    # randomly generate a debug dataset
-    for j in range(3):
-        d['datasets'][j] = []
-        for i in range(25):
-            d['datasets'][j].append(random() * 100)
+            k = k.encode('ascii', 'ignore')
+            if k not in d['datasets']:
+                d['datasets'][k] = []
+            d['datasets'][k].append(v)
+
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':
