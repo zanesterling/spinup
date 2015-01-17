@@ -161,14 +161,14 @@ def stats():
         last_month = last_month.replace(year=(last_month.year - 1))
     data = db.data.find({'api_key': api_key, 'timestamp': {'$gte': last_month}})
 
+    # sort data into appropriate streams
+    d['datasets'] = {}
+
     # randomly generate a debug dataset
-    d['datasets'] = []
     for j in range(3):
-        dataset = {'key': 'Datafeed name'}
-        dataset['data'] = []
+        d['datasets'][j] = []
         for i in range(25):
-            dataset['data'].append(random() * 100)
-        d['datasets'].append(dataset)
+            d['datasets'][j].append(random() * 100)
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':
