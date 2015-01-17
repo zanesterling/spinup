@@ -177,20 +177,22 @@ def stats():
 
     return render_template('stats.html', d=d)
 
+@app.route('/spinup', methods=['GET'])
 def spinup(): 
     username = session['username']
     loadmanager = User.get_loadmanager(username)
     
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
-    region = 'nyc1'
-    droplet_name = '__spinup_slave__'
+    region = 'nyc3'
+    droplet_name = 'spinupslave'
     size = '512mb'
+    ipdaddr = None
 
     for droplet in my_droplets:
         if droplet.name == loadmanager:
-            region =  droplet.region
             size = droplet.size_slug
+            ipaddr = droplet.ip_address
 
     images = manager.get_all_images()
     image_id = None
@@ -198,13 +200,26 @@ def spinup():
         if image.name == "SPINUP":
             image_id = image.id
 
+    print "dsalkhfkdlasfnkdas\n"
+    print region
     new_droplet = digitalocean.Droplet(
+            token=session['access_token'],
             name=droplet_name,
             region=region,
             size_slug=size,
             image=image_id,
             )
     new_droplet.create()
+    new_ipaddr = new_droplet.ip_address + ":9003"
+    ipaddr += ":9002/service"
+    t = "add-server"
+
+    data = {
+        'type':t,
+        'url':new_ipaddr
+    }
+
+    requests.post(ipaddr, data)
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
