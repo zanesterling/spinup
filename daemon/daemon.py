@@ -6,6 +6,7 @@ import datetime
 import urllib2
 
 import performance
+import secrets
 
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
@@ -113,7 +114,7 @@ class Daemon(object):
     def send(self, url="http://"+HOST+"/payload"):
         headers = {
                 "Content-Type": "application/json",
-                "X-spinup-api": "asnbljljasdljlca"
+                "X-spinup-api": secrets.api_key
                 }
         req = urllib2.Request(url, json.dumps(self.cache), headers)
         f = urllib2.urlopen(req)
