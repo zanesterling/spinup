@@ -33,10 +33,11 @@ def catch_all(path):
 
 	# forward request to child server
 	childToCall = str(nextServer) + '/' + path
+	print childToCall
 	response = urlopen(childToCall)
 
 	# return result of forward
-	return response.read()
+	return response.read() + '<br>brought to you by:' + childToCall
 
 # returns next server to be forwarded to
 def getNextServer():
