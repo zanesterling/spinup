@@ -8,7 +8,13 @@ db = MongoClient().loadBalancer
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-	childToCall = str(getNextServer()) + '/' + path
+	nextServer = getNextServer()
+	childToCall = str(nextServer) + '/' + path
+
+	# if there are no child servers, say so
+	if not nextServer:
+		return "There are no child servers at this route"
+
 	return childToCall
 	# forward request to child server
 	# return result of forward
