@@ -5,23 +5,21 @@ from models.users import User
 from models.data import Data
 import json
 
+import secrets
+
 app = Flask(__name__)
 db = MongoClient().spinup
 app.secret_key = "herro"
-
-CLIENT_ID = 'bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b'
-CLIENT_SECRET = 'e0fba3d9cf155f3cef4ae275e7abb3c05fb5c157260beec55a15ef2acc88bec9'
-CALLBACK = 'http://104.131.75.88:9001/callback'
 
 # webpage and ui
 @app.route('/')
 def home():
     d = {}
-    if not 'username' in session:
+    if not 'username' in session or not User.user_exists(session['username']):
         d['signed_in'] = False
-        return render_template("login.html", d=d)
-    
-    if 'username' in session and not User.user_exists(session['username']):
+        d['client_id'] = secrets.CLIENT_ID
+        d['callback_url'] = secrets.CALLBACK
+        print d
         return render_template("login.html", d=d)
 
     d['signed_in'] = True
@@ -42,9 +40,9 @@ def oauth_callback():
     "&client_secret=%(client_secret)s" 
     "&code=%(code)s&"
     "grant_type=authorization_code&"
-    "redirect_uri=%(callback_URL)s") %{'client_id': CLIENT_ID, "client_secret": CLIENT_SECRET,
+    "redirect_uri=%(callback_URL)s") %{'client_id': secrets.CLIENT_ID, "client_secret": secrets.CLIENT_SECRET,
                                               "code":code,
-                                              "callback_URL": CALLBACK}
+                                              "callback_URL": secrets.CALLBACK}
     r = requests.post(url).text
     response_dict = json.loads(r)
     if 'access_token' in response_dict:
@@ -59,8 +57,10 @@ def oauth_callback():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-	return render_template('login.html')
+        return render_template('login.html')
 
+    # POST
+    return 'you poster bro'
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])
@@ -75,5 +75,9 @@ def service():
     print data
     return 'OK'
 
+@app.route('/stats', methods=['POST'])
+def stats():
+    return render_template('stats.html')
+
 if __name__ == '__main__':
-	app.run('0.0.0.0', 9001, debug=True)
+    app.run('0.0.0.0', 9001, debug=True)

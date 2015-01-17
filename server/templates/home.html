@@ -5,13 +5,13 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $('#logout').css('display', 'block');
+                $('#stats').css('display', 'block');
                 $('#name').html("Signed in as {{d['username']}}");
             });
         </script>
     {% endif %}
     
     {% if not d['signed_in'] %}
-		
         <img src="{{url_for('static', filename='img/replicating.png')}}">
         
         <a href='/login'>Log in</a>

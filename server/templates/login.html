@@ -10,7 +10,7 @@
 <div class="row">
     <center><img src="{{url_for('static', filename='img/replicating.png')}}"><br>
             <br>
-            <a href='https://cloud.digitalocean.com/v1/oauth/authorize?client_id=bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b&redirect_uri=http://104.131.75.88:9001/callback&response_type=code&scope=read%20write'><button type="button"  class="btn btn-default btn-lg">Log in with Digital Ocean</button></a>
+            <a href='https://cloud.digitalocean.com/v1/oauth/authorize?client_id={{d["client_id"]}}&redirect_uri={{d["callback_url"]}}&response_type=code&scope=read%20write'><button type="button"  class="btn btn-default btn-lg">Log in with Digital Ocean</button></a>
     </center>
 </div>
 {% include 'footer.html' %}
