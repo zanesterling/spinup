@@ -52,21 +52,22 @@ class Daemon(object):
         def shouldMergePayloads(payload):
             # if there's nothing to merge with, return
             if len(self.cache) == 0:
-                print "cache empty"
+                #print "cache empty"
                 return False
             
             # if the payload and the cached payload have different timestamps, return
             lastInCache = self.cache[-1]
             if lastInCache["timestamp"] != payload["timestamp"]:
-                print "timestamps differ"
+                #print "timestamps differ"
                 return False
             
+			# if there's any key overlap, return
             for k in payload["data"].keys():
                 if k in lastInCache["data"].keys():
-                    print "keys overlap"
+                    #print "keys overlap"
                     return False
 
-            print "all good"
+            #print "all good"
             return True
 
         threading.Thread(group=None, target=listen_thread).start()
