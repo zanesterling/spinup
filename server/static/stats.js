@@ -32,6 +32,9 @@ $(document).ready(function() {
             // add nodes for data
             d3.select(svg_d)
                 .selectAll('circle')
+                .remove()
+            d3.select(svg_d)
+                .selectAll('circle')
                 .data(datasets[Object.keys(datasets)[svg_i]])
                 .enter()
                 .append('circle')
@@ -47,6 +50,9 @@ $(document).ready(function() {
                     .attr('stroke', 'white')
                     .attr('stroke-width', 2);
 
+            d3.select(svg_d)
+                .selectAll('line')
+                .remove();
             // add lines between adjacent nodes
             d3.select(svg_d)
                 .selectAll('circle')[0]
