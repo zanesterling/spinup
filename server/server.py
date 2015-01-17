@@ -51,6 +51,7 @@ def oauth_callback():
         session['access_token'] = response_dict['access_token']
         session['username'] = response_dict["info"]["name"]
         new_user = User(access_token = session['access_token'], name=session['username']) 
+        print session['access_token']
         new_user.put()
     return redirect(url_for('home')) 
 

@@ -24,7 +24,7 @@ class User():
 
     @staticmethod
     def update_user(username, access_token):
-        db.users.update({'username': username}, {'$set': {'access_token': access_token}})
+        db.users.update({'name': username}, {'$set': {'access_token': access_token}})
 
     @staticmethod
     def get(name): 
