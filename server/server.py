@@ -4,7 +4,7 @@ import requests
 from models.users import User
 from models.data import Data
 import json
-
+import digitalocean
 import secrets
 
 app = Flask(__name__)
@@ -25,10 +25,16 @@ def home():
     d['signed_in'] = True
     d['username'] = session['username']
     d['api_key'] = User.get_api_key(d['username'])
-    url = "https://cloud.digitalocean.com/v2/droplets" 
-    headers = {"Authorization": "Bearer " + session["access_token"]} 
-    droplets = request.post(url, headers).text
-    print droplets
+    #url = "https://cloud.digitalocean.com/v2/droplets" 
+    #headers = {"Authorization": "Bearer " + session["access_token"]} 
+    #droplets = requests.get(url, data=headers).text
+    #print droplets
+    manager = digitalocean.Manager(token=session["access_token"])
+    my_droplets = manager.get_all_droplets()
+    droplet_dict = {}
+    for droplet in my_droplets:
+        droplet_dict[droplet.name] = droplet.id
+    d['droplets'] = droplet_dict
     return render_template('home.html', d=d)
 
 @app.route('/logout')

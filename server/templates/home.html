@@ -7,4 +7,9 @@
         
         <a href='/login'>Log in</a>
 	{% endif %}
+    <br> 
+    <h3>Step 1: Select the droplet you would like to use for spin-ups</h3>
+    {% for droplet in d['droplets'] %}
+        <a href="/configure?droplet={{d['droplets'][droplet]}}"><div><button type="button" class="btn btn-default btn-lg">{{droplet}}</button></a></div>
+    {% endfor %}
 {% include 'footer.html' %}
