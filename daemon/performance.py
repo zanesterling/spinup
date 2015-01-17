@@ -1,6 +1,5 @@
 import psutil
 
-# CAUTION: A
 def get_CPU_usage():
     return psutil.cpu_percent(interval=1)
 
