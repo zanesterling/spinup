@@ -66,6 +66,12 @@ def login():
 @app.route('/payload', methods=['POST'])
 def service():
     data = request.data
+    api = None
+    if 'X-spinup-api' in request.headers:
+        api = request.headers['X-spinup-api']
+    else: 
+        return 
+
     print data
     return 'OK'
 
