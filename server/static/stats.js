@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    var svg = $('svg')[0];
+    var width = svg.width.baseVal.value;
+    var height = svg.height.baseVal.value;
+
     d3.select('svg')
         .selectAll('circle')
         .data(datasets[0])
@@ -8,10 +12,11 @@ $(document).ready(function() {
                 return (i+1) * 25;
             })
             .attr('cy', function(d) {
-                return d * 25;
+                // normalize to percentage scale
+                return height - d / 100 * (height - 20) - 10;
             })
             .attr('r', 5)
-            .attr('fill', 'blue')
-            .attr('stroke', 'gray')
+            .attr('fill', '#6f96a2')
+            .attr('stroke', 'white')
             .attr('stroke-width', 2);
 });

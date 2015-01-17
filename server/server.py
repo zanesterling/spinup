@@ -104,7 +104,7 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
-    d['datasets'] = [[1, 2, 3, 4, 5]]
+    d['datasets'] = [[0, 2, 100, 50, 100]]
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':
