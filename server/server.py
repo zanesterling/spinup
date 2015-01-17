@@ -1,6 +1,6 @@
 from flask import Flask, session, request, render_template
 from pymongo import MongoClient
-import request
+import requests
 
 app = Flask(__name__)
 db = MongoClient().spinup
