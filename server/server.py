@@ -65,7 +65,7 @@ def login():
 # daemon interaction
 @app.route('/payload', methods=['POST'])
 def service():
-    data = request.args['data']
+    data = request.data
     print data
     return 'OK'
 
