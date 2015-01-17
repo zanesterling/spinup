@@ -66,6 +66,7 @@ def oauth_callback():
         new_user.put()
     return redirect(url_for('home')) 
 
+#redirects to child droplet configuration page
 @app.route('/configure', methods=['GET']) 
 def configure_droplet():
     d = {}
@@ -80,6 +81,19 @@ def configure_droplet():
     d['droplet'] = request.args['droplet']
     d['dropletname'] = request.args['name']
     return render_template('configure.html', d=d)
+
+
+#takes a snapshot of the server.
+@app.route('/snapshot', methods=['GET'])
+def snapshot():
+    servername = request.args['dropletname']
+    
+    manager = digitalocean.Manager(token=session["access_token"])
+    my_droplets = manager.get_all_droplets()
+    
+    for droplet in my_droplets:
+        if droplet.name == servername:
+            droplet.take_snapshot(snapshot_name="SPINUP")
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])
