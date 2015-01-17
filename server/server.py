@@ -1,12 +1,30 @@
 from flask import Flask, render_template
+from pymongo import MongoClient
 
 app = Flask(__name__)
+db = MongoClient().spinup
 
 # webpage and ui
 @app.route('/')
 def home():
-	return render_template('home.html')
-	return 'You\'ve found the webpage for Spinup!'
+	d = {'signed_in': False} # TODO
+	return render_template('home.html', d=d)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+	if request.method == 'GET':
+		return render_template('register.html')
+
+	# POST
+	return 'you poster bro'
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	if request.method == 'GET':
+		return render_template('login.html')
+
+	# POST
+	return 'you poster bro'
 
 # daemon interaction
 @app.route('/service', methods=['POST'])
