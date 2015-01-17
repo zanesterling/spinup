@@ -121,6 +121,8 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
+
+    # randomly generate a debug dataset
     d['datasets'] = []
     for j in range(3):
         dataset = {'key': 'Datafeed name'}
