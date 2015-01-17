@@ -18,7 +18,7 @@ def home():
 def authenticate():
     code = request.args['code']
     url =   ("https://cloud.digitalocean.com/v1/oauth/token"
-    "client_id=%(client_id)s"
+    "?client_id=%(client_id)s"
     "&client_secret=%(client_secret)s" 
     "&code=%(code)s&"
     "grant_type=authorization_code&"
