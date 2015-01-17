@@ -1,3 +1,16 @@
 {% include 'header.html' %}
-	<a href='https://cloud.digitalocean.com/v1/oauth/authorize?client_id=bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b&redirect_uri=http://104.131.75.88:9001/callback&response_type=code&scope=read%20write'> Login </a>
+<div class="row">
+    <h1>Spinup</h1>
+    <div style="font-size:20px;">
+        Spinup is your solution to scaling your application with Digital Ocean. We connect to your DO account and run a small daemon alongside your server.
+        We track performance parameters including CPU and memory usage. When we detect that your droplet is reaching maximum load, our daemon spins up a new servers and
+        connects them to your load balancer.
+    </div><br><br>
+</div>
+<div class="row">
+    <center><img src="{{url_for('static', filename='img/replicating.png')}}"><br>
+            <br>
+            <a href='https://cloud.digitalocean.com/v1/oauth/authorize?client_id=bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b&redirect_uri=http://104.131.75.88:9001/callback&response_type=code&scope=read%20write'><button type="button"  class="btn btn-default btn-lg">Log in with Digital Ocean</button></a>
+    </center>
+</div>
 {% include 'footer.html' %}
