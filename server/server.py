@@ -5,6 +5,7 @@ import json
 import digitalocean
 from random import random
 import time
+from datetime import datetime
 
 from models.users import User
 from models.data import Data
@@ -151,6 +152,14 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
+
+    # fetch dataset from the past month
+    api_key = User.get_api_key(session['username'])
+    last_month = datetime.now()
+    last_month = last_month.replace(month=((last_month.month - 2) % 12 + 1))
+    if last_month.month == 12: # if we looped a year, decrement the year
+        last_month = last_month.replace(year=(last_month.year - 1))
+    data = db.data.find({'api_key': api_key, 'timestamp': {'$gte': last_month}})
 
     # randomly generate a debug dataset
     d['datasets'] = []
