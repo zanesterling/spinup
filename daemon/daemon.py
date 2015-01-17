@@ -72,8 +72,6 @@ class Daemon(object):
 
         threading.Thread(group=None, target=listen_thread).start()
 
-
-
 if __name__ == '__main__':
     daemon = Daemon()
     daemon.listen()
