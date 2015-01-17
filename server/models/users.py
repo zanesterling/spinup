@@ -27,10 +27,13 @@ class User():
     @staticmethod
     def get_api_key(username): 
         user = db.users.find_one({"name":username})
+        print user
         if 'spinup_api_key' in user:
             return user['spinup_api_key']
         else:
-            return None
+            api_key = hashlib.sha256(username).hexdigest()
+            db.users.update({'name': username}, {'spinup_api_key': api_key})
+            return api_key
 
     @staticmethod
     def update_user(username, access_token):

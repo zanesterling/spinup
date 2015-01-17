@@ -27,10 +27,11 @@ class Data():
         db.data.insert(doc)
     
     @staticmethod
-    def get(api_key, number = None):
+    def get(api_key, start_time=None, number=None):
         search_specs = {"api_key": api_key}
+        if start_time:
+            search_specs['timestamp'] = {'$geq': start_time}
         return db.data.find(spec = search_specs).sort("timestamp", pymongo.DESCENDING )
-        
 
 if __name__ == "__main__":
     p = {"event1": [(1, 10), (2, 12), (3, 8)]}

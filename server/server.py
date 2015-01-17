@@ -1,13 +1,15 @@
 from flask import Flask, url_for, redirect,  session, request, session,  render_template
 from pymongo import MongoClient
 import requests
-from models.users import User
-from models.data import Data
 import json
 import digitalocean
 from random import random
 import time
+
+from models.users import User
+from models.data import Data
 import secrets
+import setup
 
 app = Flask(__name__)
 db = MongoClient().spinup
@@ -32,16 +34,14 @@ def home():
     if 'childserver' in session:
         d['childserver'] = session['childserver']
     
-    #url = "https://cloud.digitalocean.com/v2/droplets" 
-    #headers = {"Authorization": "Bearer " + session["access_token"]} 
-    #droplets = requests.get(url, data=headers).text
-    #print droplets
+    # get dict of droplets on this account
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
     droplet_dict = {}
     for droplet in my_droplets:
         droplet_dict[droplet.name] = droplet.id
     d['droplets'] = droplet_dict
+
     return render_template('home.html', d=d)
 
 @app.route('/logout')
@@ -113,6 +113,10 @@ def snapshot():
             droplet.take_snapshot(snapshot_name="SPINUP")
     return redirect(url_for('home')) 
 
+@app.route('/install/<api_key>')
+def install(api_key):
+    return setup.get_file(api_key)
+
 # daemon interaction
 @app.route('/payload', methods=['POST'])
 def service():
@@ -139,9 +143,15 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
-    d['datasets'] = [[]]
-    for i in range(25):
-        d['datasets'][0].append(random() * 100)
+
+    # randomly generate a debug dataset
+    d['datasets'] = []
+    for j in range(3):
+        dataset = {'key': 'Datafeed name'}
+        dataset['data'] = []
+        for i in range(25):
+            dataset['data'].append(random() * 100)
+        d['datasets'].append(dataset)
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':

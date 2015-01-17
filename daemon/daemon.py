@@ -6,16 +6,17 @@ import datetime
 import urllib2
 
 import performance
+import secrets
 
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
 BASE_SLEEP_TIME = 1.0
-HOST = "localhost:9001"
+HOST = "104.131.75.88:9001"
 
 class Daemon(object):
     def __init__(self):
         self.sock = socket.socket()
-        self.sock.bind(('localhost', PORT))
+        self.sock.bind(("localhost", PORT))
         self.sock.listen(5)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.cache = []
@@ -30,10 +31,10 @@ class Daemon(object):
                 data = json.loads(conn.recv(4096))
                 self.receive_msg(data)
 				# accept commands from sender
-                if 'cmd' in data:
-                    if data['cmd'] == 'die':
+                if "cmd" in data:
+                    if data["cmd"] == "die":
                         self.running = False
-                    elif data['cmd'] == 'send':
+                    elif data["cmd"] == "send":
                         self.send()
 
 				# wrap up and prepare to sleep until the next cycle
@@ -69,7 +70,7 @@ class Daemon(object):
 
     def receive_msg(self, data):
         def shouldMergePayloads(payload):
-            # if there's nothing to merge with, return
+            # if theres nothing to merge with, return
             if len(self.cache) == 0:
                 #print "cache empty"
                 return False
@@ -80,7 +81,7 @@ class Daemon(object):
                 #print "timestamps differ"
                 return False
             
-			# if there's any key overlap, return
+			# if theres any key overlap, return
             for k in payload["data"].keys():
                 if k in lastInCache["data"].keys():
                     #print "keys overlap"
@@ -112,8 +113,8 @@ class Daemon(object):
 
     def send(self, url="http://"+HOST+"/payload"):
         headers = {
-                'Content-Type': 'application/json',
-                'X-spinup-api': 'asnbljljasdljlca'
+                "Content-Type": "application/json",
+                "X-spinup-api": secrets.api_key
                 }
         req = urllib2.Request(url, json.dumps(self.cache), headers)
         f = urllib2.urlopen(req)
@@ -121,6 +122,6 @@ class Daemon(object):
         f.close()
         self.cache = []
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     daemon = Daemon()
     daemon.listen()
