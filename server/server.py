@@ -54,15 +54,6 @@ def oauth_callback():
         new_user.put()
     return redirect(url_for('home')) 
 
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-
-    # POST
-    return 'you poster bro'
-
 # daemon interaction
 @app.route('/payload', methods=['POST'])
 def service():
