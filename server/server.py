@@ -24,6 +24,7 @@ def home():
 
     d['signed_in'] = True
     d['username'] = session['username']
+    d['api_key'] = User.get_api_key(d['username'])
     return render_template('home.html', d=d)
 
 @app.route('/logout')

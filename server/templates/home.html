@@ -1,6 +1,7 @@
 {% include 'header.html' %}
 	<h1>SpinUp</h1>
-	You've found the webpage for SpinUp!<br>
+    <div class="alert alert-info" role="alert">Api key: {{d['api_key']}}</div>
+    <br>
     {% if d['signed_in'] %}
         <script type="text/javascript">
             $(document).ready(function(){

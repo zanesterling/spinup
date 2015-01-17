@@ -25,6 +25,14 @@ class User():
             db.users.insert(doc)
 
     @staticmethod
+    def get_api_key(username): 
+        user = db.users.find_one({"name":username})
+        if 'spinup_api_key' in user:
+            return user['spinup_api_key']
+        else:
+            return None
+
+    @staticmethod
     def update_user(username, access_token):
         db.users.update({'name': username}, {'$set': {'access_token': access_token}})
 
