@@ -5,7 +5,7 @@ def get_file(api_key):
     #!/bin/bash
 
     # create spinup user
-    adduser spinup --disabled-password;
+    adduser spinup --disabled-password --quiet;
 
     mkdir /home/spinup/spinup
 
