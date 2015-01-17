@@ -8,6 +8,6 @@ def get_RAM_usage():
     return 100 * float(mem.used) / float(mem.total)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print get_CPU_usage()
     print get_RAM_usage()

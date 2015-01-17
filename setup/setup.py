@@ -7,15 +7,19 @@ def get_file():
     # create spinup user
     adduser spinup --disabled-password;
 
+    mkdir /home/spinup/spinup
+
     # become spinup
     su spinup;
     """
     for filename in os.listdir("daemon"):
         if filename.endswith(".py") or filename == "requirements.txt":
             out += "echo '"
-            out += open("daemon/" + filename).read()
-            out += "' >> /home/spinup/spinup/" + filename + ";"
+            out += open("daemon/" + filename).read().replace("'", "\\'")
+            out += "' > /home/spinup/spinup/" + filename + ";"
 
+
+    out += "yes | apt-get install python-dev;"
     out += "pip install -r /home/spinup/spinup/requirements.txt;"
             
 
@@ -81,7 +85,7 @@ def get_file():
             echo "Usage: $0 {status|start|stop|restart}"
             exit 1
     esac
-    ' >> /etc/init.d/spinup
+    ' > /etc/init.d/spinup
     chmod +x /etc/init.d/spinup
     """
     return out
