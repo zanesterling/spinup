@@ -6,7 +6,7 @@ from models.data import Data
 import json
 import digitalocean
 from random import random
-
+import time
 import secrets
 
 app = Flask(__name__)
@@ -27,6 +27,11 @@ def home():
     d['signed_in'] = True
     d['username'] = session['username']
     d['api_key'] = User.get_api_key(d['username'])
+    d['childserver'] = None
+
+    if 'childserver' in session:
+        d['childserver'] = session['childserver']
+    
     #url = "https://cloud.digitalocean.com/v2/droplets" 
     #headers = {"Authorization": "Bearer " + session["access_token"]} 
     #droplets = requests.get(url, data=headers).text
@@ -87,13 +92,26 @@ def configure_droplet():
 @app.route('/snapshot', methods=['GET'])
 def snapshot():
     servername = request.args['dropletname']
-    
+    session['childserver'] = servername
+
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
-    
+    my_images = manager.get_all_images() 
+    for image in my_images:
+        if image.name == 'SPINUP':
+            image.destroy()
+
     for droplet in my_droplets:
         if droplet.name == servername:
+            droplet.shutdown()
+            stall = True
+            while stall:
+                droplet.load()
+                if droplet.status == 'off':
+                    stall = False
+                time.sleep(1)
             droplet.take_snapshot(snapshot_name="SPINUP")
+    return redirect(url_for('home')) 
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])

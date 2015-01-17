@@ -8,8 +8,20 @@
         <a href='/login'>Log in</a>
 	{% endif %}
     <br> 
-    <h3>Step 1: Select the droplet you would like to use for spin-ups</h3>
+    <h3>Select the droplet you would like to use for spin-ups</h3>
+    {%if d['childserver'] is not none %}
+        <div>Currently, spin-ups are set to model after {{d['childserver']}}</div>
+        <br>
+    {%endif%}
+
     {% for droplet in d['droplets'] %}
-        <a href="/configure?droplet={{d['droplets'][droplet]}}&name={{droplet}}"><div><button type="button" class="btn btn-default btn-lg">{{droplet}}</button></a></div>
+        <a href="/configure?droplet={{d['droplets'][droplet]}}&name={{droplet}}"><div><button type="button" class="btn 
+        {% if d['childserver'] == droplet %}
+        btn-success
+        {% else %}
+        btn-default
+        {%endif%}
+        
+        btn-lg">{{droplet}}</button></a></div><br>
     {% endfor %}
 {% include 'footer.html' %}
