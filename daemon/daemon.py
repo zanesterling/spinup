@@ -90,13 +90,18 @@ class Daemon(object):
             for k in payload["data"].keys():
                 self.cache[-1]["data"][k] = payload["data"][k]
         else:
-            # append it to the cache
-            self.cache.append(payload)
-            print "appended" #debug
+            # If we have the same timestamp look into alternate merge strategies
+            if len(self.cache) != 0 and self.cache[-1]["timestamp"] == payload["timestamp"]:
+                # merge non-unique keys
+                for k in payload["data"]:
+                    if not k in self.cache[-1]["data"].keys():
+                        self.cache[-1]["data"][k] = payload["data"][k]
+            else:
+                self.cache.append(payload)
 
     def send(self, url="http://localhost:9001/"):
         headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
                 'X-spinup-api': 'asnbljljasdljlca'
                 }
         req = urllib2.Request(url, json.dumps(self.cache), headers)
