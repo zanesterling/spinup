@@ -25,7 +25,8 @@ $(document).ready(function() {
     d3.select('svg')
         .selectAll('circle')[0]
         .forEach(function(d, i, a) {
-            if (i == 0) return; // can't draw backwards from origin
+            // can't draw backwards from origin
+            if (i == 0) return;
 
             // add a line from this node to the previous
             d3.select('svg')
