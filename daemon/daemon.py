@@ -31,18 +31,22 @@ class Daemon(object):
 				# if the payload can be merged into the cache
                 if shouldMergePayloads(payload):
                     # merge it
-                    print "merged"
+                    print "merged" #debug
                     for k in payload["data"].keys():
                         self.cache[-1]["data"][k] = payload["data"][k]
                 else:
                     # append it to the cache
                     self.cache.append(payload)
-                    print "appended"
+                    print "appended" #debug
+
+				# accept commands from sender
                 if 'cmd' in payload['data']:
                     if payload['data']['cmd'] == 'die':
                         break
+
+				# wrap up and prepare to sleep until the next cycle
                 conn.close()
-                print self.cache
+                print self.cache #debug
                 time.sleep(0.001)
 
         def shouldMergePayloads(payload):
