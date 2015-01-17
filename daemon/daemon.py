@@ -10,6 +10,7 @@ import performance
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
 BASE_SLEEP_TIME = 1.0
+HOST = "localhost:9001"
 
 class Daemon(object):
     def __init__(self):
@@ -51,10 +52,16 @@ class Daemon(object):
                 percent_to_sleep = 100 - max(cpu, ram)
                 time.sleep((percent_to_sleep / 100.0) * BASE_SLEEP_TIME)
 
+        def sending_thread():
+            while self.running:
+                self.send()
+                time.sleep(10)
+
 
         self.running = True
         threading.Thread(group=None, target=listen_thread).start()
         threading.Thread(group=None, target=cpu_polling_thread).start()
+        threading.Thread(group=None, target=sending_thread).start()
 
     def receive_msg(self, data):
         def shouldMergePayloads(payload):
@@ -99,7 +106,7 @@ class Daemon(object):
             else:
                 self.cache.append(payload)
 
-    def send(self, url="http://localhost:9001/"):
+    def send(self, url="http://"+HOST+"/payload"):
         headers = {
                 'Content-Type': 'application/json',
                 'X-spinup-api': 'asnbljljasdljlca'
