@@ -26,7 +26,7 @@ def authenticate():
                                               "code":code,
                                               "callback_URL": CALLBACK}
     r = requests.post(url)
-    print r.text
+    return r.text
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
