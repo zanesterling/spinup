@@ -1,12 +1,17 @@
-$(document).ready(function(){
-    var kv_displays = $('.key-value-display');
-    for (var i = 0; i < kv_displays.length; i++) {
-        // make display full width
-        var display = kv_displays[i];
-
-        // fit canvas sexily
-        var svg = $(display).find('svg')[0];
-        svg.style.marginLeft =  'auto';
-        svg.style.marginRight = 'auto';
-    }
+$(document).ready(function() {
+    d3.select('svg')
+        .selectAll('circle')
+        .data(datasets[0])
+        .enter()
+        .append('circle')
+            .attr('cx', function(d, i) {
+                return (i+1) * 25;
+            })
+            .attr('cy', function(d) {
+                return d * 25;
+            })
+            .attr('r', 5)
+            .attr('fill', 'blue')
+            .attr('stroke', 'gray')
+            .attr('stroke-width', 2);
 });
