@@ -11,7 +11,7 @@ def send(key, value):
     payload = {
             "timestamp": datetime.datetime.now().strftime(DATE_FORMAT),
             "data": {
-                key: [value]
+                key: value
                 }
             }
     print "sending", json.dumps(payload)
