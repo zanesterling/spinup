@@ -15,11 +15,11 @@ app.secret_key = "herro"
 @app.route('/')
 def home():
     d = {}
-    if not 'username' in session:
+    if not 'username' in session or not User.user_exists(session['username']):
         d['signed_in'] = False
-        return render_template("login.html", d=d)
-    
-    if 'username' in session and not User.user_exists(session['username']):
+        d['client_id'] = secrets.CLIENT_ID
+        d['callback_url'] = secrets.CALLBACK
+        print d
         return render_template("login.html", d=d)
 
     d['signed_in'] = True
@@ -40,9 +40,9 @@ def oauth_callback():
     "&client_secret=%(client_secret)s" 
     "&code=%(code)s&"
     "grant_type=authorization_code&"
-    "redirect_uri=%(callback_URL)s") %{'client_id': CLIENT_ID, "client_secret": CLIENT_SECRET,
+    "redirect_uri=%(callback_URL)s") %{'client_id': secrets.CLIENT_ID, "client_secret": secrets.CLIENT_SECRET,
                                               "code":code,
-                                              "callback_URL": CALLBACK}
+                                              "callback_URL": secrets.CALLBACK}
     r = requests.post(url).text
     response_dict = json.loads(r)
     if 'access_token' in response_dict:
@@ -57,8 +57,10 @@ def oauth_callback():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-	return render_template('login.html')
+        return render_template('login.html')
 
+    # POST
+    return 'you poster bro'
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])
@@ -67,5 +69,9 @@ def service():
     print data
     return 'OK'
 
+@app.route('/stats', methods=['POST'])
+def stats():
+    return render_template('stats.html')
+
 if __name__ == '__main__':
-	app.run('0.0.0.0', 9001, debug=True)
+    app.run('0.0.0.0', 9001, debug=True)
