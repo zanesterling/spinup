@@ -1,6 +1,7 @@
 import socket
 import threading
 import json
+import time
 
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
@@ -20,6 +21,8 @@ class Daemon(object):
                 print data
                 payload = json.loads(data)
                 print payload
+                conn.close()
+                time.sleep(1)
         threading.Thread(group=None, target=listen_thread).start()
         print "ok, it's inited"
 
