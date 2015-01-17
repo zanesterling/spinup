@@ -54,26 +54,19 @@ def oauth_callback():
         new_user.put()
     return redirect(url_for('home')) 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-	if request.method == 'GET':
-		return render_template('register.html')
-
-	# POST
-	return 'you poster bro'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	if request.method == 'GET':
-		return render_template('login.html')
+    if request.method == 'GET':
+	return render_template('login.html')
 
-	# POST
-	return 'you poster bro'
 
 # daemon interaction
-@app.route('/service', methods=['POST'])
+@app.route('/payload', methods=['POST'])
 def service():
-	return 'accepted'
+    data = request.args['data']
+    print data
+    return 'OK'
 
 if __name__ == '__main__':
 	app.run('0.0.0.0', 9001, debug=True)
