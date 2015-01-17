@@ -54,7 +54,11 @@ class Daemon(object):
 
         def sending_thread():
             while self.running:
-                self.send()
+                print "posting"
+                try:
+                    self.send()
+                except:
+                    print "Server at",HOST,"was unavailable"
                 time.sleep(10)
 
 
