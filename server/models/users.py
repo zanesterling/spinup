@@ -27,6 +27,7 @@ class User():
     @staticmethod
     def get_api_key(username): 
         user = db.users.find_one({"name":username})
+        print user
         if 'spinup_api_key' in user:
             return user['spinup_api_key']
         else:

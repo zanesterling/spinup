@@ -1,12 +1,12 @@
 from flask import Flask, url_for, redirect,  session, request, session,  render_template
 from pymongo import MongoClient
 import requests
-from models.users import User
-from models.data import Data
 import json
 import digitalocean
 from random import random
 
+from models.users import User
+from models.data import Data
 import secrets
 
 app = Flask(__name__)
@@ -27,16 +27,16 @@ def home():
     d['signed_in'] = True
     d['username'] = session['username']
     d['api_key'] = User.get_api_key(d['username'])
-    #url = "https://cloud.digitalocean.com/v2/droplets" 
-    #headers = {"Authorization": "Bearer " + session["access_token"]} 
-    #droplets = requests.get(url, data=headers).text
-    #print droplets
+    session['api_key'] = d['api_key']
+
+    # get dict of droplets on this account
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
     droplet_dict = {}
     for droplet in my_droplets:
         droplet_dict[droplet.name] = droplet.id
     d['droplets'] = droplet_dict
+
     return render_template('home.html', d=d)
 
 @app.route('/logout')

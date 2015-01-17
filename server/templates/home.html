@@ -1,6 +1,6 @@
 {% include 'header.html' %}
 	<h1>SpinUp</h1>
-    <div class="alert alert-info" role="alert">Api key: {{d['api_key']}}</div>
+    <div class="alert alert-info" role="alert">Api key: {{ d['api_key'] }}</div>
     
     {% if not d['signed_in'] %}
         <img src="{{url_for('static', filename='img/replicating.png')}}">
