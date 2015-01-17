@@ -162,5 +162,35 @@ def stats():
         d['datasets'].append(dataset)
     return render_template('stats.html', d=d)
 
+def spinup(): 
+    username = session['username']
+    loadmanager = User.get_loadmanager(username)
+    
+    manager = digitalocean.Manager(token=session["access_token"])
+    my_droplets = manager.get_all_droplets()
+    region = 'nyc1'
+    droplet_name = '__spinup_slave__'
+    size = '512mb'
+
+    for droplet in my_droplets:
+        if droplet.name == loadmanager:
+            region =  droplet.region
+            size = droplet.size_slug
+
+    images = manager.get_all_images()
+    image_id = None
+    for image in images:
+        if image.name == "SPINUP":
+            image_id = image.id
+
+    new_droplet = digitalocean.Droplet(
+            name=droplet_name,
+            region=region,
+            size_slug=size,
+            image=image_id,
+            )
+    new_droplet.create()
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     app.run('0.0.0.0', 9001, debug=True)
