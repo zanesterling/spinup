@@ -12,6 +12,7 @@ def home():
 
 @app.route('/callback', methods=['GET', 'POST'])
 def authenticate():
+    print request.data
     return 'yo'
 
 @app.route('/register', methods=['GET', 'POST'])
