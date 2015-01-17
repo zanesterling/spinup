@@ -95,7 +95,11 @@ class Daemon(object):
             print "appended" #debug
 
     def send(self, url="http://localhost:9001/"):
-        req = urllib2.Request(url, json.dumps(self.cache), {'Content-Type': 'application/json'})
+        headers = {
+                'Content-Type': 'application/json'
+                'X-spinup-api': 'asnbljljasdljlca'
+                }
+        req = urllib2.Request(url, json.dumps(self.cache), headers)
         f = urllib2.urlopen(req)
         response = f.read()
         f.close()
