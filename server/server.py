@@ -64,6 +64,18 @@ def oauth_callback():
         new_user.put()
     return redirect(url_for('home')) 
 
+@app.route('/configure', methods=['GET']) 
+def configure_droplet():
+    if not 'username' in session or not User.user_exists(session['username']):
+        d['signed_in'] = False
+        d['client_id'] = secrets.CLIENT_ID
+        d['callback_url'] = secrets.CALLBACK
+        print d
+        return render_template("login.html", d=d)
+    d['username'] = session['username']
+    d['droplet'] = request.args['droplet']
+    return render_template('configure.html', d=d)
+
 # daemon interaction
 @app.route('/payload', methods=['POST'])
 def service():
