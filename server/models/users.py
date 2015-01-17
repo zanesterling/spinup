@@ -15,7 +15,7 @@ class User():
     def put(self):
         doc = {"access_token": self.access_token,
                 "name": self.name,
-                "spinup_api_key": spinup_api}
+                "spinup_api_key": self.spinup_api}
         
         person = db.users.find_one({"name": self.name})
         
