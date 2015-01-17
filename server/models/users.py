@@ -15,7 +15,9 @@ class User():
     def put(self):
         doc = {"access_token": self.access_token,
                 "name": self.name,
-                "spinup_api_key": self.spinup_api}
+                "spinup_api_key": self.spinup_api,
+                "loadmanager": None, 
+                "child_droplet": None}
         
         person = db.users.find_one({"name": self.name})
         
@@ -23,6 +25,28 @@ class User():
             User.update_user(self.name, self.access_token)
         else:
             db.users.insert(doc)
+
+    @staticmethod
+    def get_child_droplet(name):
+        user = db.users.find_one({'name': name})
+        if 'child_droplet' in user:
+            return user['child_droplet']
+        return None
+
+    @staticmethod
+    def get_loadmanager(name):
+        user = db.users.find_one({'name': name})
+        if 'loadmanager' in user:
+            return user['loadmanager']
+        return None
+    
+    @staticmethod
+    def add_child_droplet(name, child):
+        db.users.update({'name': name}, {'$set': {'child_droplet':loadmanager}})
+    
+    @staticmethod
+    def add_loadmanager(name, loadmanager):
+        db.users.update({'name': name}, {'$set': {'loadmanager':loadmanager}})
 
     @staticmethod
     def get_api_key(username): 

@@ -85,8 +85,13 @@ def configure_droplet():
     d['username'] = session['username']
     d['droplet'] = request.args['droplet']
     d['dropletname'] = request.args['name']
+    d['api_key'] = User.get_api_key(d['username'])
     return render_template('configure.html', d=d)
 
+@app.route('/configure_loadmanager', methods=['GET'])
+def configure_loadmanager(): 
+    loadmanager = request.args['loadmanager']
+    
 
 #takes a snapshot of the server.
 @app.route('/snapshot', methods=['GET'])
