@@ -1,9 +1,13 @@
-from flask import Flask, session, request, render_template
+from flask import Flask, session, request, session,  render_template
 from pymongo import MongoClient
 import requests
+from models import users, data
+import json
 
 app = Flask(__name__)
 db = MongoClient().spinup
+app.secret_key = "herro"
+
 CLIENT_ID = 'bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b'
 CLIENT_SECRET = 'e0fba3d9cf155f3cef4ae275e7abb3c05fb5c157260beec55a15ef2acc88bec9'
 CALLBACK = 'http://104.131.75.88:9001/callback'
@@ -11,8 +15,17 @@ CALLBACK = 'http://104.131.75.88:9001/callback'
 # webpage and ui
 @app.route('/')
 def home():
-	d = {'signed_in': False} # TODO
-	return render_template('home.html', d=d)
+    d = {}
+    if not 'username' in session:
+        d['logged_in'] = False
+        return render_template("login.html", d=d)
+    
+    if 'username' in session and not User.user_exists(session['username']):
+        return render_template("login.html", d=d)
+
+    d['logged_in'] = True
+    d['username'] = session['username']
+    return render_template('home.html', d=d)
 
 @app.route('/callback', methods=['GET', 'POST'])
 def authenticate():
@@ -25,7 +38,10 @@ def authenticate():
     "redirect_uri=%(callback_URL)s") %{'client_id': CLIENT_ID, "client_secret": CLIENT_SECRET,
                                               "code":code,
                                               "callback_URL": CALLBACK}
-    r = requests.post(url)
+    r = requests.post(url).text
+    response_dict = json.loads(response)
+    if 'access_token' in response_dict:
+        session['username'] = response_dict["info"]["name"]
     return r.text
 
 @app.route('/register', methods=['GET', 'POST'])
