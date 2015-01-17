@@ -10,7 +10,7 @@
         </script>
     {% endif %}
     {% if not d['signed_in'] %}
-		<img href={{url_for('static', filename='img/replication.png')}}
+		<img src={{url_for('static', filename='img/replication.png')}}>
         
         <a href='/login'>Log in</a>
 	{% endif %}
