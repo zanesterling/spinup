@@ -26,13 +26,12 @@ def home():
         print d
         return render_template("login.html", d=d)
 
+    username = session['username']
     d['signed_in'] = True
-    d['username'] = session['username']
+    d['username'] = username
     d['api_key'] = User.get_api_key(d['username'])
-    d['childserver'] = None
-
-    if 'childserver' in session:
-        d['childserver'] = session['childserver']
+    d['childserver'] = User.get_child_droplet(username)
+    d['loadmanager'] = User.get_loadmanager(username)
     
     # get dict of droplets on this account
     manager = digitalocean.Manager(token=session["access_token"])
@@ -91,13 +90,17 @@ def configure_droplet():
 @app.route('/configure_loadmanager', methods=['GET'])
 def configure_loadmanager(): 
     loadmanager = request.args['loadmanager']
-    
+    user = session['username']
+    User.add_loadmanager(user, loadmanager)
+    return redirect(url_for(home))
 
 #takes a snapshot of the server.
 @app.route('/snapshot', methods=['GET'])
 def snapshot():
-    servername = request.args['dropletname']
-    session['childserver'] = servername
+    servername = request.args['dropletname']    
+    user = session['username']
+    User.add_child_droplet(user, servername)
+
 
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
