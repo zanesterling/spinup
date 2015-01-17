@@ -1,10 +1,8 @@
 {% include 'header.html' %}
-	<center>
-		<h1>SpinUp</h1>
-		You've found the webpage for SpinUp!<br>
-		{% if not d['signed_in'] %}
-			<a href='/register'>Register</a>
-			<a href='/login'>Log in</a>
-		{% endif %}
-	</center>
+	<h1>SpinUp</h1>
+	You've found the webpage for SpinUp!<br>
+	{% if not d['signed_in'] %}
+		<a href='/register'>Register</a>
+		<a href='/login'>Log in</a>
+	{% endif %}
 {% include 'footer.html' %}
