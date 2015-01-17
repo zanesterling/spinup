@@ -5,6 +5,7 @@ from urllib2 import urlopen
 app = Flask(__name__)
 db = MongoClient().loadBalancer
 
+# note: only does GET requests
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>') # catch-all path
 def catch_all(path):
