@@ -5,6 +5,8 @@ from models.users import User
 from models.data import Data
 import json
 import digitalocean
+from random import random
+
 import secrets
 
 app = Flask(__name__)
@@ -105,6 +107,9 @@ def stats():
 
     d = {}
     d['logged_in'] = ('username' in session)
+    d['datasets'] = [[]]
+    for i in range(25):
+        d['datasets'][0].append(random() * 100)
     return render_template('stats.html', d=d)
 
 if __name__ == '__main__':

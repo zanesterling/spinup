@@ -1,12 +1,40 @@
-$(document).ready(function(){
-    var kv_displays = $('.key-value-display');
-    for (var i = 0; i < kv_displays.length; i++) {
-        // make display full width
-        var display = kv_displays[i];
+$(document).ready(function() {
+    var svg = $('svg')[0];
+    var width = svg.width.baseVal.value;
+    var height = svg.height.baseVal.value;
 
-        // fit canvas sexily
-        var svg = $(display).find('svg')[0];
-        svg.style.marginLeft =  'auto';
-        svg.style.marginRight = 'auto';
-    }
+    // add nodes for data
+    d3.select('svg')
+        .selectAll('circle')
+        .data(datasets[0])
+        .enter()
+        .append('circle')
+            .attr('cx', function(d, i) {
+                return (i+1) * 25;
+            })
+            .attr('cy', function(d) {
+                // normalize to percentage scale
+                return height - d / 100 * (height - 20) - 10;
+            })
+            .attr('r', 5)
+            .attr('fill', '#6f96a2')
+            .attr('stroke', 'white')
+            .attr('stroke-width', 2);
+
+    // add lines between adjacent nodes
+    d3.select('svg')
+        .selectAll('circle')[0]
+        .forEach(function(d, i, a) {
+            if (i == 0) return; // can't draw backwards from origin
+
+            // add a line from this node to the previous
+            d3.select('svg')
+                .append('line')
+                    .attr('x1', d.cx.baseVal.value)
+                    .attr('y1', d.cy.baseVal.value)
+                    .attr('x2', a[i-1].cx.baseVal.value)
+                    .attr('y2', a[i-1].cy.baseVal.value)
+                    .attr('stroke', 'white')
+                    .attr('stroke-width', 2);
+        });
 });
