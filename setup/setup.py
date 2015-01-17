@@ -12,10 +12,10 @@ def get_file():
     # become spinup
     su spinup;
     """
-    for filename in os.listdir("daemon"):
+    for filename in os.listdir("../daemon"):
         if filename.endswith(".py") or filename == "requirements.txt":
             out += "echo '"
-            out += open("daemon/" + filename).read().replace("'", "\\'")
+            out += open("../daemon/" + filename).read().replace("'", "\\'")
             out += "' > /home/spinup/spinup/" + filename + ";"
 
 
