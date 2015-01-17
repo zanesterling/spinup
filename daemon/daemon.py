@@ -3,12 +3,13 @@ import threading
 import json
 import time
 import datetime
+import urllib2
 
 import performance
 
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
-BASE_SLEEP_TIME = 5
+BASE_SLEEP_TIME = 1.0
 
 class Daemon(object):
     def __init__(self):
@@ -31,6 +32,8 @@ class Daemon(object):
                 if 'cmd' in data:
                     if data['cmd'] == 'die':
                         self.running = False
+                    elif data['cmd'] == 'send':
+                        self.send()
 
 				# wrap up and prepare to sleep until the next cycle
                 conn.close()
@@ -90,6 +93,13 @@ class Daemon(object):
             # append it to the cache
             self.cache.append(payload)
             print "appended" #debug
+
+    def send(self, url="http://localhost:9001/"):
+        req = urllib2.Request(url, json.dumps(self.cache), {'Content-Type': 'application/json'})
+        f = urllib2.urlopen(req)
+        response = f.read()
+        f.close()
+        self.cache = []
 
 if __name__ == '__main__':
     daemon = Daemon()
