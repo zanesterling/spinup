@@ -163,7 +163,7 @@ def stats():
 
     # sort data into appropriate streams
     d['datasets'] = {}
-    for i in range(min(data.count(), 45)):
+    for i in range(min(data.count(), 17)):
         datum = data.next()
         for k,v in datum.items():
             # skip built-in keys
@@ -174,6 +174,9 @@ def stats():
             if k not in d['datasets']:
                 d['datasets'][k] = []
             d['datasets'][k].append(v)
+
+    # stick api_key in there too
+    d['api-key'] = api_key
 
     return render_template('stats.html', d=d)
 
@@ -221,6 +224,21 @@ def spinup():
 
     requests.post(ipaddr, data)
     return redirect(url_for('home'))
+
+@app.route('/stats/lastStat/<api_key>')
+def lastStat(api_key):
+    request = Data.get(api_key)
+
+    resp = {}
+    datum = request.next()
+    for k,v in datum.items():
+        # skip built-in keys
+        if k in ['datatype', 'timestamp', 'api_key', '_id']:
+            continue
+
+        k = k.encode('ascii', 'ignore')
+        resp[k] = v
+    return json.dumps(resp)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 9001, debug=True)
