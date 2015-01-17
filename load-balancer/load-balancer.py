@@ -1,23 +1,24 @@
 from flask import Flask
 from pymongo import MongoClient
-import urllib2
+from urllib2 import urlopen
 
 app = Flask(__name__)
 db = MongoClient().loadBalancer
 
 @app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@app.route('/<path:path>') # catch-all path
 def catch_all(path):
 	nextServer = getNextServer()
-	childToCall = str(nextServer) + '/' + path
-
 	# if there are no child servers, say so
 	if not nextServer:
 		return "There are no child servers at this route"
 
-	return childToCall
 	# forward request to child server
+	childToCall = str(nextServer) + '/' + path
+	response = urlopen(childToCall)
+
 	# return result of forward
+	return response.read()
 
 # returns next server to be forwarded to
 def getNextServer():
