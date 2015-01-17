@@ -1,5 +1,5 @@
 import os
-def get_file():
+def get_file(api_key):
     out = ""
     out += """
     #!/bin/bash
@@ -17,6 +17,8 @@ def get_file():
             out += "echo '"
             out += open("../daemon/" + filename).read().replace("'", "\\'")
             out += "' > /home/spinup/spinup/" + filename + ";"
+
+    out += "echo 'api_key = \"" + api_key + "\"' > /home/spinup/spinup/secret.py;"
 
 
     out += "yes | apt-get install python-dev;"
@@ -92,4 +94,4 @@ def get_file():
     return out
 
 if __name__ == '__main__':
-    print get_file()
+    print get_file("MY_API_KEY")
