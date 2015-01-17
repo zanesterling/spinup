@@ -87,6 +87,7 @@ def get_file():
     esac
     ' > /etc/init.d/spinup
     chmod +x /etc/init.d/spinup
+    update-rc.d spinup start 2 1 . stop 0 1 .
     """
     return out
 
