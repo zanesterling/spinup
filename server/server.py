@@ -5,13 +5,11 @@ from models.users import User
 from models.data import Data
 import json
 
+import secrets
+
 app = Flask(__name__)
 db = MongoClient().spinup
 app.secret_key = "herro"
-
-CLIENT_ID = 'bb93565e1f2db84beeb740a0d704d820fb93f1a5db4984050b23121dfe583a7b'
-CLIENT_SECRET = 'e0fba3d9cf155f3cef4ae275e7abb3c05fb5c157260beec55a15ef2acc88bec9'
-CALLBACK = 'http://104.131.75.88:9001/callback'
 
 # webpage and ui
 @app.route('/')
