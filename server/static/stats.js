@@ -11,7 +11,7 @@ $(document).ready(function() {
             .enter()
             .append('circle')
                 .attr('cx', function(d, i) {
-                    return (i+1) * 25;
+                    return width - (i+1) * 25;
                 })
                 .attr('cy', function(d) {
                     // normalize to percentage scale
