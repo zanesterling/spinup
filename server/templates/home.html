@@ -32,8 +32,8 @@
     {%endif%}
 
     {% for droplet in d['droplets'] %}
-        <a href="/configure_loadmanager?loadmanager={{d['droplets'][droplet]}}&name={{droplet}}"><div><button type="button" class="btn 
-        {% if d['childserver'] == droplet %}
+        <a href="/configure_loadmanager?loadmanager={{droplet}}"><div><button type="button" class="btn 
+        {% if d['loadmanager'] == droplet %}
         btn-success
         {% else %}
         btn-default

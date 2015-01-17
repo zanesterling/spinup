@@ -42,7 +42,7 @@ class User():
     
     @staticmethod
     def add_child_droplet(name, child):
-        db.users.update({'name': name}, {'$set': {'child_droplet':loadmanager}})
+        db.users.update({'name': name}, {'$set': {'child_droplet':child}})
     
     @staticmethod
     def add_loadmanager(name, loadmanager):

@@ -92,7 +92,7 @@ def configure_loadmanager():
     loadmanager = request.args['loadmanager']
     user = session['username']
     User.add_loadmanager(user, loadmanager)
-    return redirect(url_for(home))
+    return redirect(url_for('home'))
 
 #takes a snapshot of the server.
 @app.route('/snapshot', methods=['GET'])
