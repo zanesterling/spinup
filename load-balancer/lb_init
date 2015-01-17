@@ -1,0 +1,3 @@
+#!/bin/sh
+
+python lb_init_config.py
