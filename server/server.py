@@ -17,6 +17,7 @@ db = MongoClient().spinup
 app.secret_key = "herro"
 
 cur_api_key = [None]
+cur_access_token = [None]
 
 CPU_LOAD_THRESHOLD = 40
 
@@ -78,6 +79,7 @@ def oauth_callback():
     response_dict = json.loads(r)
     if 'access_token' in response_dict:
         session['access_token'] = response_dict['access_token']
+        app.config['cur_access_token'] = response_dict['access_token']
         session['username'] = response_dict["info"]["name"]
         new_user = User(access_token = session['access_token'], name=session['username']) 
         new_user.put()
@@ -225,7 +227,8 @@ def spinup():
     username = session['username'] if 'username' in session else None
     loadmanager = User.get_loadmanager(username=username, api_key=api_key)
     
-    manager = digitalocean.Manager(token=session["access_token"])
+    print app.config['cur_access_token']
+    manager = digitalocean.Manager(token=app.config['cur_access_token'])
     my_droplets = manager.get_all_droplets()
     region = 'nyc3'
     droplet_name = 'spinupslave'
@@ -244,7 +247,7 @@ def spinup():
             image_id = image.id
 
     new_droplet = digitalocean.Droplet(
-            token=session['access_token'],
+            token=app.config['cur_access_token'],
             name=droplet_name,
             region=region,
             size_slug=size,
@@ -256,7 +259,7 @@ def spinup():
     url = "https://api.digitalocean.com/v2/droplets/" + str(dropid) 
 
     headers = {'content-type': 'application/json',
-                'Authorization': 'Bearer ' + session['access_token'],
+                'Authorization': 'Bearer ' + app.config['cur_access_token'],
             }
 
     time.sleep(10)
