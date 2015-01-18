@@ -265,13 +265,22 @@ def lastStat(api_key):
     resp = {}
     datum = next(request, None)
     if datum:
-        for k,v in datum.items():
-            # skip built-in keys
-            if k in ['datatype', 'timestamp', 'api_key', '_id']:
-                continue
+        # compare time of last request to datum
+        datum_time = datum['timestamp']
+        if 'last_request' not in session or \
+            datetime.strptime(session['last_request'], "%d:%m:%y:%H:%M:%S") < datum_time:
+            for k,v in datum.items():
+                # skip built-in keys
+                if k in ['datatype', 'timestamp', 'api_key', '_id']:
+                    continue
 
-            k = k.encode('ascii', 'ignore')
-            resp[k] = v
+                k = k.encode('ascii', 'ignore')
+                resp[k] = v
+
+    # update last_request with current time
+    now = datetime.now()
+    session['last_request'] = now.replace(second=now.second - 2).strftime("%d:%m:%y:%H:%M:%S")
+    print datetime.strptime(session['last_request'], "%d:%m:%y:%H:%M:%S")
 
     return json.dumps(resp)
 
