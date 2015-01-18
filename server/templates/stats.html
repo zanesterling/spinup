@@ -9,6 +9,8 @@
     </script>
     <script src='/static/stats.js'></script>
 
+    <span id='api-key' style='display:none'>{{ d['api-key'] }}</span>
+
     <h1>Stats</h1>
     {% for ds_key in d['datasets'].keys() %}
         {{ ds_key }} <br>

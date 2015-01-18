@@ -12,4 +12,4 @@ def notthehome():
 	return 'this is not the home<br>got to <a href=\'/\'>the home</a>'
 
 if __name__ == '__main__':
-	app.run('0.0.0.0', int(sys.argv[1]), debug=True)
+	app.run('0.0.0.0', 9003, debug=True)
