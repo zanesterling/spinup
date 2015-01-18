@@ -18,6 +18,15 @@ app.secret_key = "herro"
 
 CPU_LOAD_THRESHOLD = 40
 
+@app.route('/easter')
+def easter():
+    if 'easter' in session:
+        session.pop('easter')
+    else:
+        session['easter'] = 'E A S T E R B O Y Z'
+    print 'easter' in session
+    return redirect(url_for('home'))
+
 # webpage and ui
 @app.route('/')
 def home():
@@ -34,6 +43,7 @@ def home():
     d['api_key'] = User.get_api_key(d['username'])
     d['childserver'] = User.get_child_droplet(username)
     d['loadmanager'] = User.get_loadmanager(username)
+    d['easter'] = 'easter' in session
    
     # get dict of droplets on this account
     manager = digitalocean.Manager(token=session["access_token"])
@@ -85,6 +95,7 @@ def configure_droplet():
     d['droplet'] = request.args['droplet']
     d['dropletname'] = request.args['name']
     d['api_key'] = User.get_api_key(d['username'])
+    d['easter'] = 'easter' in session
     return render_template('configure.html', d=d)
 
 @app.route('/configure_loadmanager', methods=['GET'])
@@ -191,6 +202,7 @@ def stats():
 
     # stick api_key in there too
     d['api-key'] = api_key
+    d['easter'] = 'easter' in session
 
     return render_template('stats.html', d=d)
 

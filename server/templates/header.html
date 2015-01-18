@@ -13,6 +13,7 @@
             });
         </script>
     {% endif %}
+    <span id='easter' style='display: none'>{{ d['easter'] }}</span>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -49,3 +50,6 @@
         <!-- /.container-fluid -->
 </nav>
 	<div class="container" style="align:center!important; padding-top: 90px;">
+	{% if d['easter'] %}
+		<p>Blah it's easter</p>
+	{% endif %}
