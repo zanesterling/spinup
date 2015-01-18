@@ -107,9 +107,12 @@ $(document).ready(function() {
     };
 
     function yellowText() {
-        $('p').each(function(index, elem) {
-            $(elem).css('color', 'yellow')
-                .css('background', 'black');
+        $('p,h3,button').each(function(index, elem) {
+            if (Math.random() > 0.4)
+                $(elem).css('color', 'yellow')
+                    .css('background', 'black');
+            if (Math.random() > 0.7)
+                $(elem).text('sample text');
         });
     };
 
