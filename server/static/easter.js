@@ -17,6 +17,7 @@ AUDIO = {
 };
 
 $(document).ready(function() {
+    var clickSplosionCounter = 0;
     var buttonClicks = 0;
     var color = 'red';
 
@@ -280,6 +281,35 @@ $(document).ready(function() {
             }
         }, 50)
         sound[0].play();
+
+        clickSplosionCounter++;
+        if (clickSplosionCounter == 6) {
+            clickSplosionCounter = 0;
+
+            // splode sound
+            var splode = $('<audio></audio>');
+            splode.attr('src', '/static/explosion.mp3');
+            splode.attr('type', 'audio/mpeg');
+            $('body').append(splode);
+            splode[0].play();
+
+            // splode splode
+            var boom = $('<img></img>');
+            boom.attr('src', GIFS.explosion);
+            boom.css('position', 'absolute');
+            boom.css('left', e.clientX - 75);
+            boom.css('top',  e.clientY - 75);
+            $('body').append(boom);
+
+            boom.animate({
+                'opacity': 0
+            }, {
+                done: function() {
+                    splode.remove();
+                    boom.remove();
+                }
+            }, 50);
+        }
     }
 
     dewNav();
