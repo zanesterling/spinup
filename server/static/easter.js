@@ -5,13 +5,15 @@ GIFS = {
 };
 
 AUDIO = {
-    xFiles: '/static/x-files-airhorn.mp3'
+    xFiles: '/static/x-files-airhorn.mp3',
+    womboCombo: 'http://www.myinstants.com/media/sounds/wombo-combo.mp3',
 };
 
 $(document).ready(function() {
-    var frogYolo = function() {
+    var frogSetup = function() {
         var frog = $('<img></img>');
         frog.attr('src', GIFS.rainbowFrog);
+        frog.addClass('frog');
         frog.addClass('easter');
         frog.attr('id', 'frog');
         frog.css('position', 'fixed');
@@ -19,14 +21,9 @@ $(document).ready(function() {
         frog.css('opacity', 1);
         $('body').append(frog);
 
-        frog.animate({
-            'opacity': 0,
-            'bottom': '+=300',
-            'width': '100%'
-        }, 1000);
-
         frog = $('<img></img>');
         frog.attr('src', GIFS.rainbowFrog);
+        frog.addClass('frog');
         frog.addClass('easter');
         frog.attr('id', 'frog');
         frog.css('position', 'fixed');
@@ -35,14 +32,9 @@ $(document).ready(function() {
         frog.css('opacity', 1);
         $('body').append(frog);
 
-        frog.animate({
-            'opacity': 0,
-            'bottom': '+=300',
-            'width': '100%'
-        }, 2000);
-
         frog = $('<img></img>');
         frog.attr('src', GIFS.rainbowFrog);
+        frog.addClass('frog');
         frog.addClass('easter');
         frog.attr('id', 'frog');
         frog.css('position', 'fixed');
@@ -50,14 +42,9 @@ $(document).ready(function() {
         frog.css('opacity', 1);
         $('body').append(frog);
 
-        frog.animate({
-            'opacity': 0,
-            'top': '+=300',
-            'width': '100%'
-        }, 2000);
-
         frog = $('<img></img>');
         frog.attr('src', GIFS.rainbowFrog);
+        frog.addClass('frog');
         frog.addClass('easter');
         frog.attr('id', 'frog');
         frog.css('position', 'fixed');
@@ -65,12 +52,52 @@ $(document).ready(function() {
         frog.css('right', 0);
         frog.css('opacity', 1);
         $('body').append(frog);
+    };
 
-        frog.animate({
+    var frogYolo = function() {
+        var frogs = $('.frog');
+
+        $(frogs[0]).css('opacity', 1);
+        $(frogs[0]).animate({
+            'opacity': 0,
+            'bottom': '+=300',
+            'width': '100%'
+        }, 2000, function() {
+            this.style.bottom = 0;
+            this.style.width = 300;
+        });
+
+        $(frogs[1]).css('opacity', 1);
+        $(frogs[1]).animate({
+            'opacity': 0,
+            'bottom': '+=300',
+            'width': '100%'
+        }, 2000, function() {
+            this.style.bottom = 0;
+            this.style.right = 0;
+            this.style.width = 300;
+        });
+
+        $(frogs[2]).css('opacity', 1);
+        $(frogs[2]).animate({
+            'opacity': 0,
+            'top': '+=300',
+            'width': '100%'
+        }, 2000, function() {
+            this.style.top = 0;
+            this.style.width = 300;
+        });
+
+        $(frogs[3]).css('opacity', 1);
+        $(frogs[3]).animate({
             'opacity': 0,
             'bottom': '-=300',
             'width': '100%'
-        }, 2000);
+        }, 2000, function() {
+            this.style.top = 0;
+            this.style.right = 0;
+            this.style.width = 300;
+        });
     }
 
     function snoopCorners() {
@@ -139,12 +166,21 @@ $(document).ready(function() {
         return function() {
             elem.effect("shake");
         }
-    }
+    };
 
-    setInterval(frogYolo, 5000);
+    function buttonWombo() {
+        $('button').each(function(index, elem) {
+            $(elem).find('a')
+                .attr('href', '');
+            //console.log(elem);
+        });
+    };
+
+    frogSetup();
     frogYolo();
+    setInterval(frogYolo, 5000);
     snoopCorners();
     yellowText();
     xFiles();
+    buttonWombo();
 });
-
