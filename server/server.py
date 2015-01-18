@@ -26,7 +26,6 @@ def easter():
         session.pop('easter')
     else:
         session['easter'] = 'E A S T E R B O Y Z'
-    print 'easter' in session
     return redirect(url_for('home'))
 
 # webpage and ui
@@ -37,6 +36,7 @@ def home():
         d['signed_in'] = False
         d['client_id'] = secrets.CLIENT_ID
         d['callback_url'] = secrets.CALLBACK
+        d['easter'] = 'easter' in session
         return render_template("login.html", d=d)
 
     username = session['username']
