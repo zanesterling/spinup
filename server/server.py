@@ -24,7 +24,6 @@ def home():
         d['signed_in'] = False
         d['client_id'] = secrets.CLIENT_ID
         d['callback_url'] = secrets.CALLBACK
-        print d
         return render_template("login.html", d=d)
 
     username = session['username']
@@ -67,7 +66,6 @@ def oauth_callback():
         session['access_token'] = response_dict['access_token']
         session['username'] = response_dict["info"]["name"]
         new_user = User(access_token = session['access_token'], name=session['username']) 
-        print session['access_token']
         new_user.put()
     return redirect(url_for('home')) 
 
@@ -79,7 +77,6 @@ def configure_droplet():
         d['signed_in'] = False
         d['client_id'] = secrets.CLIENT_ID
         d['callback_url'] = secrets.CALLBACK
-        print d
         return render_template("login.html", d=d)
     d['signed_in'] = True
     d['username'] = session['username']
@@ -136,6 +133,7 @@ def service():
     else: 
         return 
 
+    
     jdata = json.loads(data)
     for piece in jdata:
         new_data = Data(
@@ -143,6 +141,22 @@ def service():
                 payload = piece['data'],
                 api_key = api)
         new_data.put()
+    
+    d = Data.get(api)
+    count = d.count() 
+    d = d[(count-10):count]
+    sum_ = 0.
+    for data in d:
+        inc = data['cpu']
+        sum_ += inc
+    sum_ = sum_/10.
+    
+    print "WHAT THE FUCK" 
+    if sum_ > 40:
+        print "SUM IS TOO FUCKING BIG" 
+        return redirect(url_for('spinup'))
+    else:
+        print "THIS SUM BULLSHIT"
     return 'OK'
 
 @app.route('/stats')
@@ -180,8 +194,13 @@ def stats():
 
     return render_template('stats.html', d=d)
 
-@app.route('/spinup', methods=['GET'])
-def spinup(): 
+@app.route('/spinup', methods=['GET','POST'])
+def spinup():
+    print "STARTING TO SPIN THE FUCK UP"
+    if 'username' not in session:
+        print "COULDNT FIND THE FUCKING USER FUCKING NAME FUCK" 
+        return redirect(url_for('home'))
+    
     username = session['username']
     loadmanager = User.get_loadmanager(username)
     
@@ -203,8 +222,6 @@ def spinup():
         if image.name == "SPINUP":
             image_id = image.id
 
-    print "dsalkhfkdlasfnkdas\n"
-    print region
     new_droplet = digitalocean.Droplet(
             token=session['access_token'],
             name=droplet_name,
@@ -222,12 +239,14 @@ def spinup():
             }
 
     time.sleep(10)
-    
+   
+    if not 'skip' in request.args:
+        time.sleep(20) 
     response = requests.get(url, headers=headers)
     s = json.loads(response.text)
 
 
-    new_ipaddr = s['droplet']['networks']['v4'][0]['ip_address'] + ":9003"
+    new_ipaddr = "http://" + s['droplet']['networks']['v4'][0]['ip_address'] + ":9003"
     ipaddr += ":9002/service"
     t = "add-server"
 
@@ -236,7 +255,7 @@ def spinup():
         'url':new_ipaddr
     }
 
-    requests.post(ipaddr, data)
+    requests.post(ipaddr, data=data)
     return redirect(url_for('home'))
 
 @app.route('/stats/lastStat/<api_key>')

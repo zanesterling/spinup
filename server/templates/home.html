@@ -47,6 +47,6 @@
     {% endfor %}
 
     <h3>If you want to, manually spin up another server by clicking the button below.</h3>
-    <center><a href="/spinup"><img src="{{url_for('static', filename='img/spin.png')}}"></a></center>
+    <center><a href="/spinup?skip=true"><img src="{{url_for('static', filename='img/spin.png')}}"></a></center>
         
 {% include 'footer.html' %}

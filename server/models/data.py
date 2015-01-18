@@ -9,6 +9,7 @@ db = client.spinup
 class Data():
     def __init__(self, timestamp, payload, api_key, datatype=None):
         self.payload = payload
+        print payload
         self.datatype = datatype
         self.timestamp = datetime.strptime(timestamp, "%m:%d:%y:%H:%M:%S")
         self.api_key = api_key
