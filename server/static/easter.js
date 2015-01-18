@@ -287,6 +287,11 @@ $(document).ready(function() {
         }, 50)
         sound[0].play();
 
+        $('body').trigger('startRumble');
+        setTimeout(function() {
+            $('body').trigger('stopRumble');
+        }, 100);
+
         clickSplosionCounter++;
         if (clickSplosionCounter == 6) {
             clickSplosionCounter = 0;
@@ -359,6 +364,7 @@ $(document).ready(function() {
     buttonWombo();
     skrillz();
     illuminati();
+    $('body').jrumble();
     $(document).click(hitmark);
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
