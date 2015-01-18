@@ -308,12 +308,11 @@ $(document).ready(function() {
 
             boom.animate({
                 'opacity': 0
-            }, {
-                done: function() {
-                    splode.remove();
-                    boom.remove();
-                }
-            }, 50);
+            }, 1000, function() {
+                splode.remove();
+                boom.trigger('stopRumble');
+                boom.remove();
+            });
         }
     }
 
@@ -364,4 +363,3 @@ $(document).ready(function() {
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
 });
-
