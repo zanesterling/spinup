@@ -10,7 +10,7 @@ $(document).ready(function() {
     }
 
     var pingForData = function() {
-        var URL = 'http://158.130.165.84:9001';
+        var URL = window.location.origin;
         var uri = URL + '/stats/lastStat/' + apiKey;
         $.getJSON(uri, updateWithData);
         setTimeout(pingForData, 1000);
