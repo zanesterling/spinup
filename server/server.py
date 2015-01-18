@@ -123,7 +123,7 @@ def snapshot():
 
 @app.route('/install/<api_key>')
 def install(api_key):
-    return setup.get_file(api_key)
+    return setup.get_file(api_key, secrets.HOST_IP)
 
 # daemon interaction
 @app.route('/payload', methods=['POST'])

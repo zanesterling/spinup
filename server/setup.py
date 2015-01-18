@@ -1,5 +1,5 @@
 import os
-def get_file(api_key):
+def get_file(api_key, host_ip):
     out = ""
     out += """
     #!/bin/bash
@@ -18,7 +18,8 @@ def get_file(api_key):
             out += open("../daemon/" + filename).read().replace("'", "\\'")
             out += "' > /home/spinup/spinup/" + filename + ";"
 
-    out += "echo 'api_key = \"" + api_key + "\"' > /home/spinup/spinup/secrets.py;"
+    out += "echo 'api_key = \"" + api_key + "\"' >  /home/spinup/spinup/secrets.py;"
+    out += "echo 'HOST = \"" + host_ip + "\"' >> /home/spinup/spinup/secrets.py;"
 
 
     out += "yes | apt-get install python-dev;"

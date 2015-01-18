@@ -11,7 +11,6 @@ import secrets
 DATE_FORMAT = "%m:%d:%y:%H:%M:%S"
 PORT = 1234
 BASE_SLEEP_TIME = 1.0
-HOST = "104.131.75.88:9001"
 
 class Daemon(object):
     def __init__(self):
@@ -59,7 +58,7 @@ class Daemon(object):
                 try:
                     self.send()
                 except:
-                    print "Server at",HOST,"was unavailable"
+                    print "Server at", secrets.HOST, "was unavailable"
                 time.sleep(10)
 
 
@@ -111,7 +110,7 @@ class Daemon(object):
             else:
                 self.cache.append(payload)
 
-    def send(self, url="http://"+HOST+"/payload"):
+    def send(self, url="http://" + secrets.HOST + "/payload"):
         headers = {
                 "Content-Type": "application/json",
                 "X-spinup-api": secrets.api_key
