@@ -16,6 +16,8 @@ app = Flask(__name__)
 db = MongoClient().spinup
 app.secret_key = "herro"
 
+cur_api_key = [None]
+
 CPU_LOAD_THRESHOLD = 40
 
 @app.route('/easter')
@@ -158,15 +160,17 @@ def service():
     # average cpu load over last ten frames
     d = Data.get(api)
     count = d.count() 
-    d = d[(count-10):count]
+    d = d[0:min(10, count)]
     sum_ = 0.
     for data in d:
         inc = data['cpu']
         sum_ += inc
-    sum_ = sum_/10.
+    sum_ = sum_ * 1.0 / min(10, count)
+    print sum_
     
     if sum_ > CPU_LOAD_THRESHOLD:
         print "high load: spinning up a new server"
+        cur_api_key[0] = api
         return redirect(url_for('spinup'))
     return 'OK'
 
@@ -209,12 +213,17 @@ def stats():
 @app.route('/spinup', methods=['GET','POST'])
 def spinup():
     print "STARTING TO SPIN THE FUCK UP"
+    api_key = None
     if 'username' not in session:
-        print "COULDNT FIND THE FUCKING USER FUCKING NAME FUCK" 
-        return redirect(url_for('home'))
+        if cur_api_key[0]:
+            api_key = cur_api_key[0]
+            cur_api_key[0] = None
+        else:
+            print "COULDNT FIND THE FUCKING USER FUCKING NAME FUCK" 
+            return redirect(url_for('home'))
     
-    username = session['username']
-    loadmanager = User.get_loadmanager(username)
+    username = session['username'] if 'username' in session else None
+    loadmanager = User.get_loadmanager(username=username, api_key=api_key)
     
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
@@ -291,7 +300,7 @@ def lastStat(api_key):
 
     # update last_request with current time
     now = datetime.now()
-    session['last_request'] = now.replace(second=now.second - 2).strftime("%d:%m:%y:%H:%M:%S")
+    session['last_request'] = now.replace(second=(now.second - 2)%60).strftime("%d:%m:%y:%H:%M:%S")
     print datetime.strptime(session['last_request'], "%d:%m:%y:%H:%M:%S")
 
     return json.dumps(resp)

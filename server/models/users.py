@@ -34,8 +34,13 @@ class User():
         return None
 
     @staticmethod
-    def get_loadmanager(name):
-        user = db.users.find_one({'name': name})
+    def get_loadmanager(username=None, api_key=None):
+        query = {}
+        if username:
+        	query['name'] = username
+        if api_key:
+        	query['spinup_api_key'] = api_key
+        user = db.users.find_one(query)
         if 'loadmanager' in user:
             return user['loadmanager']
         return None

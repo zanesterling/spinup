@@ -11,10 +11,12 @@ GIFS = {
 AUDIO = {
     xFiles: '/static/x-files-airhorn.mp3',
     womboCombo: 'http://www.myinstants.com/media/sounds/wombo-combo.mp3',
+    ohBabyTriple: 'http://soundboard.panictank.net/Oh%20Baby%20A%20Triple.mp3',
 };
 
 $(document).ready(function() {
     var buttonClicks = 0;
+    var color = 'red';
 
     var frogSetup = function() {
         var frog = $('<img></img>');
@@ -175,17 +177,28 @@ $(document).ready(function() {
     };
 
     function buttonWombo() {
-        var clip = $('<audio></audio>');
-        clip.attr('src', AUDIO.womboCombo);
-        clip.attr('type', 'audio.mpeg');
-        clip.attr('id', 'wombo-combo');
-        $('body').append(clip);
+        var triple = $('<audio></audio>');
+        triple.attr('src', AUDIO.ohBabyTriple);
+        triple.attr('type', 'audio.mpeg');
+        triple.attr('id', 'wombo-combo');
+        $('body').append(triple);
+
+        var wombo = $('<audio></audio>');
+        wombo.attr('src', AUDIO.womboCombo);
+        wombo.attr('type', 'audio.mpeg');
+        wombo.attr('id', 'wombo-combo');
+        $('body').append(wombo);
 
         $('button').click(function() {
             buttonClicks++;
             if (buttonClicks % 3 == 0) {
-                clip[0].play();
+                triple[0].play();
             }
+
+            if (buttonClicks % 5 == 0) {
+                wombo[0].play();
+            }
+
             rotateDiv(this, 30 * buttonClicks);
             return false;
         });
@@ -197,11 +210,6 @@ $(document).ready(function() {
                     '-ms-transform': 'rotate('+deg+'deg)',
                     'transform': 'rotate('+deg+'deg)'});
         return $(div);
-    }
-
-    function wackyBackers() {
-        if (Math.random() > 0.5)
-            $('body').css('background', 'magenta');
     }
 
     function dewNav() {
@@ -234,6 +242,15 @@ $(document).ready(function() {
         $('body').append(dew);
     }
 
+    function toggleBackground() {
+        color = $('body').css('background');
+        if ($('body').css('background') == 'red') {
+            $('body').css('background', 'green');
+        } else if ($('body').css('background') == 'green') {
+            $('body').css('background', 'red');
+        }
+    }
+
     dewNav();
     frogSetup();
     frogYolo();
@@ -242,5 +259,7 @@ $(document).ready(function() {
     yellowText();
     xFiles();
     buttonWombo();
-    wackyBackers();
+    $('body').css('background', 'red');
+    setInterval(toggleBackground, 1100);
 });
+
