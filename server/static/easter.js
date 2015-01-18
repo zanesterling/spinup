@@ -1,5 +1,6 @@
 IMAGES = {
-    mountainDew: 'http://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg'
+    mountainDew: 'http://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg',
+    hitmarker: 'http://i.imgur.com/l9Im97W.jpg'
 };
 
 GIFS = {
@@ -12,6 +13,7 @@ AUDIO = {
     xFiles: '/static/x-files-airhorn.mp3',
     womboCombo: 'http://www.myinstants.com/media/sounds/wombo-combo.mp3',
     ohBabyTriple: 'http://soundboard.panictank.net/Oh%20Baby%20A%20Triple.mp3',
+    hitmarker: '/static/HITMARKER.wav'
 };
 
 $(document).ready(function() {
@@ -251,6 +253,35 @@ $(document).ready(function() {
         }
     }
 
+    function hitmark(e) {
+        var marker = $('<img></img>');
+        marker.attr('src', IMAGES.hitmarker);
+        marker.css('position', 'absolute');
+        var xoffset = (Math.random() * 30) - 15;
+        var yoffset = (Math.random() * 30) - 15;
+        marker.css('left', e.clientX - 25 + xoffset);
+        marker.css('top', e.clientY - 25 + yoffset);
+
+        var sound = $('<audio></audio>');
+        sound.attr('src', AUDIO.hitmarker);
+        sound.attr('type', 'audio.wav');
+        sound.attr('class', 'hitmark');
+
+        $('body').append(marker);
+        $('body').append(sound);
+
+        marker.animate( {
+            'opacity': 0
+        },
+            {
+            done: function() {
+                marker.remove();
+                sound.remove();
+            }
+        }, 50)
+        sound[0].play();
+    }
+
     dewNav();
     frogSetup();
     frogYolo();
@@ -259,6 +290,7 @@ $(document).ready(function() {
     yellowText();
     xFiles();
     buttonWombo();
+    $(document).click(hitmark);
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
 });
