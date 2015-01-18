@@ -1,3 +1,7 @@
+IMAGES = {
+    mountainDew: 'http://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg'
+};
+
 GIFS = {
     rainbowFrog: 'http://zippy.gfycat.com/IndelibleIncomparableDinosaur.gif',
     littleSnoop: 'http://puu.sh/3ObVc.gif',
@@ -179,13 +183,58 @@ $(document).ready(function() {
 
         $('button').click(function() {
             buttonClicks++;
-            if (buttonClicks == 3) {
+            if (buttonClicks % 3 == 0) {
                 clip[0].play();
             }
+            rotateDiv(this, 30 * buttonClicks);
             return false;
         });
     };
 
+    function rotateDiv(div, deg) {
+        $(div).css({'-webkit-transform': 'rotate('+deg+'deg)',
+                    '-moz-transform': 'rotate('+deg+'deg)',
+                    '-ms-transform': 'rotate('+deg+'deg)',
+                    'transform': 'rotate('+deg+'deg)'});
+        return $(div);
+    }
+
+    function wackyBackers() {
+        if (Math.random() > 0.5)
+            $('body').css('background', 'magenta');
+    }
+
+    function dewNav() {
+        var dew = $('<img></img>');
+        dew.attr('src', IMAGES.mountainDew);
+        dew.css('position', 'absolute');
+        dew.css('top', 0);
+        dew.css('left', 0);
+        dew.css('width', '100');
+        dew.css('height', '135%');
+        $('body').append(dew);
+
+        var dew = $('<img></img>');
+        dew.attr('src', IMAGES.mountainDew);
+        dew.css('position', 'absolute');
+        dew.css('top', 0);
+        dew.css('right', 0);
+        dew.css('width', '100');
+        dew.css('height', '135%');
+        $('body').append(dew);
+
+        var dew = $('<img></img>');
+        dew.attr('src', IMAGES.mountainDew);
+        dew.css('position', 'absolute');
+        rotateDiv(dew, 90);
+        dew.css('top', '-92%');
+        dew.css('left', '45%');
+        dew.css('width', '100');
+        dew.css('height', '200%');
+        $('body').append(dew);
+    }
+
+    dewNav();
     frogSetup();
     frogYolo();
     setInterval(frogYolo, 5000);
@@ -193,4 +242,5 @@ $(document).ready(function() {
     yellowText();
     xFiles();
     buttonWombo();
+    wackyBackers();
 });
