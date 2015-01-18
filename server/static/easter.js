@@ -403,6 +403,24 @@ $(document).ready(function() {
         }
     }
 
+    function wow() {
+        var wally = $('<iframe width="420" height="315" src="//www.youtube.com/embed/FzjtPtOH-Hg?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+        wally.css('position', 'absolute');
+        wally.css('bottom', -1000);
+        wally.css('left', '25%');
+
+        wally.animate({
+            'bottom': 200
+        }, 5000, function() {
+
+            wally.animate({
+                'bottom': 6000,
+            }, 4000);
+        });
+        $('body').append(wally);
+
+    }
+
     dewNav();
     setTimeout(function() {
         frogSetup();
@@ -420,4 +438,5 @@ $(document).ready(function() {
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
     gabenIsWatching();
+    wow();
 });
