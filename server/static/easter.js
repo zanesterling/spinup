@@ -4,6 +4,10 @@ GIFS = {
     explosion: 'http://www.instructables.com/files/orig/FYT/IALR/FEMY342N/FYTIALRFEMY342N.gif'
 };
 
+AUDIO = {
+    xFiles: '/static/x-files-airhorn.mp3'
+};
+
 $(document).ready(function() {
     var frogYolo = function() {
         var frog = $('<img></img>');
@@ -116,9 +120,21 @@ $(document).ready(function() {
         });
     };
 
+    function xFiles() {
+        if (Math.random() < 0.8) return;
+
+        var clip = $('<audio></audio>');
+        clip.attr('src', AUDIO.xFiles);
+        clip.attr('type', 'audio/mpeg');
+        clip.attr('autoplay', true)
+        clip.text('no support, sorry!');
+        $('body').append(clip);
+    };
+
     setInterval(frogYolo, 5000);
     frogYolo();
     snoopCorners();
     yellowText();
+    xFiles();
 });
 
