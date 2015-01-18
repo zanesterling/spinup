@@ -80,6 +80,7 @@ $(document).ready(function() {
         snoop.css('position', 'fixed');
         snoop.css('bottom', 0);
         $('body').append(snoop);
+        setInterval(shakeFunc(snoop), 1000);
 
         var boom = $('<img></img>');
         boom.attr('src', GIFS.explosion);
@@ -90,6 +91,7 @@ $(document).ready(function() {
         boom.width(70);
         boom.height(80);
         $('body').append(boom);
+        setInterval(shakeFunc(boom), 1000);
 
         snoop = $('<img></img>');
         snoop.attr('src', GIFS.littleSnoop);
@@ -98,6 +100,7 @@ $(document).ready(function() {
         snoop.css('bottom', 0);
         snoop.css('right', 0);
         $('body').append(snoop);
+        setInterval(shakeFunc(snoop), 1000);
 
         boom = $('<img></img>');
         boom.attr('src', GIFS.explosion);
@@ -108,6 +111,7 @@ $(document).ready(function() {
         boom.width(70);
         boom.height(80);
         $('body').append(boom);
+        setInterval(shakeFunc(boom), 1000);
     };
 
     function yellowText() {
@@ -130,6 +134,12 @@ $(document).ready(function() {
         clip.text('no support, sorry!');
         $('body').append(clip);
     };
+
+    function shakeFunc(elem) {
+        return function() {
+            elem.effect("shake");
+        }
+    }
 
     setInterval(frogYolo, 5000);
     frogYolo();
