@@ -163,7 +163,7 @@ def stats():
 
     # sort data into appropriate streams
     d['datasets'] = {}
-    for i in range(min(data.count(), 17)):
+    for i in range(min(data.count(), 47)):
         datum = data.next()
         for k,v in datum.items():
             # skip built-in keys
