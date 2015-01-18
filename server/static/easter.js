@@ -406,12 +406,12 @@ $(document).ready(function() {
     function wow() {
         var wally = $('<iframe width="420" height="315" src="//www.youtube.com/embed/FzjtPtOH-Hg?autoplay=1" frameborder="0" allowfullscreen></iframe>');
         wally.css('position', 'absolute');
-        wally.css('bottom', -1000);
+        wally.css('bottom', -500);
         wally.css('left', '25%');
 
         wally.animate({
             'bottom': 200
-        }, 5000, function() {
+        }, 4300, function() {
 
             wally.animate({
                 'bottom': 6000,
@@ -429,9 +429,9 @@ $(document).ready(function() {
     }, 5000);
     snoopCorners();
     yellowText();
-    xFiles();
     buttonWombo();
-    skrillz();
+    setTimeout(xFiles, 4500);
+    setTimeout(skrillz, 4500);
     illuminati();
     $('body').jrumble();
     $(document).click(hitmark);
