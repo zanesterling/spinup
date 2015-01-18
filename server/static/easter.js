@@ -1,7 +1,8 @@
 IMAGES = {
     mountainDew: 'http://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg',
     hitmarker: 'http://i.imgur.com/l9Im97W.jpg',
-    illuminati: 'http://www.edmsauce.com/wp-content/uploads/2014/12/illuminati.jpg'
+    illuminati: 'http://www.edmsauce.com/wp-content/uploads/2014/12/illuminati.jpg',
+    gaben: 'http://www.bestgifever.com/data/images/2012/08/gaben.gif',
 };
 
 GIFS = {
@@ -352,6 +353,15 @@ $(document).ready(function() {
 
     }
 
+    function gabenIsWatching() {
+        var gaben = $('<img></img>');
+        gaben.attr('src', IMAGES.gaben);
+        gaben.css('position', 'fixed');
+        gaben.css('top', 110);
+        gaben.css('right', 100);
+        $('body').append(gaben);
+    }
+
     dewNav();
     setTimeout(function() {
         frogSetup();
@@ -368,4 +378,5 @@ $(document).ready(function() {
     $(document).click(hitmark);
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
+    gabenIsWatching();
 });
