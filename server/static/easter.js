@@ -244,10 +244,10 @@ $(document).ready(function() {
         dew.attr('src', IMAGES.mountainDew);
         dew.css('position', 'absolute');
         rotateDiv(dew, 90);
-        dew.css('top', '-92%');
+        dew.css('top', '-82%');
         dew.css('left', '45%');
         dew.css('width', '100');
-        dew.css('height', '200%');
+        dew.css('height', '184%');
         $('body').append(dew);
     }
 
