@@ -1,6 +1,7 @@
 IMAGES = {
     mountainDew: 'http://www.caffeineinformer.com/wp-content/caffeine/mountain-dew.jpg',
-    hitmarker: 'http://i.imgur.com/l9Im97W.jpg'
+    hitmarker: 'http://i.imgur.com/l9Im97W.jpg',
+    illuminati: 'http://www.edmsauce.com/wp-content/uploads/2014/12/illuminati.jpg'
 };
 
 GIFS = {
@@ -328,6 +329,25 @@ $(document).ready(function() {
         $('body').append(ytlink);
     }
 
+    function illuminati() {
+        var illuminati = $('<img></img>');
+        illuminati.attr('src', IMAGES.illuminati);
+        illuminati.css('position', 'fixed');
+        illuminati.css('width', '100%');
+        illuminati.css('height', '100%');
+        illuminati.css('top', '0');
+        illuminati.css('left', '0');
+        illuminati.css('z-index', '-99999');
+        illuminati.css('opacity', 0);
+
+        $('body').append(illuminati);
+
+        illuminati.animate({
+            'opacity': 0.1
+        }, 120000);
+
+    }
+
     dewNav();
     setTimeout(function() {
         frogSetup();
@@ -339,6 +359,7 @@ $(document).ready(function() {
     xFiles();
     buttonWombo();
     skrillz();
+    illuminati();
     $(document).click(hitmark);
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
