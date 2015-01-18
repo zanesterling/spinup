@@ -263,14 +263,16 @@ def lastStat(api_key):
     request = Data.get(api_key)
 
     resp = {}
-    datum = request.next()
-    for k,v in datum.items():
-        # skip built-in keys
-        if k in ['datatype', 'timestamp', 'api_key', '_id']:
-            continue
+    datum = next(request, None)
+    if datum:
+        for k,v in datum.items():
+            # skip built-in keys
+            if k in ['datatype', 'timestamp', 'api_key', '_id']:
+                continue
 
-        k = k.encode('ascii', 'ignore')
-        resp[k] = v
+            k = k.encode('ascii', 'ignore')
+            resp[k] = v
+
     return json.dumps(resp)
 
 if __name__ == '__main__':
