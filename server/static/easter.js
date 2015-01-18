@@ -10,6 +10,8 @@ AUDIO = {
 };
 
 $(document).ready(function() {
+    var buttonClicks = 0;
+
     var frogSetup = function() {
         var frog = $('<img></img>');
         frog.attr('src', GIFS.rainbowFrog);
@@ -169,10 +171,18 @@ $(document).ready(function() {
     };
 
     function buttonWombo() {
-        $('button').each(function(index, elem) {
-            $(elem).find('a')
-                .attr('href', '');
-            //console.log(elem);
+        var clip = $('<audio></audio>');
+        clip.attr('src', AUDIO.womboCombo);
+        clip.attr('type', 'audio.mpeg');
+        clip.attr('id', 'wombo-combo');
+        $('body').append(clip);
+
+        $('button').click(function() {
+            buttonClicks++;
+            if (buttonClicks == 3) {
+                clip[0].play();
+            }
+            return false;
         });
     };
 
