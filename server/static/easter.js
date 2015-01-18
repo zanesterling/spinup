@@ -162,9 +162,12 @@ $(document).ready(function() {
         });
     };
 
-    function xFiles() {
-        if (Math.random() < 0.8) return;
 
+    var RUNNING_MUSIC = false;
+    function xFiles() {
+        if (Math.random() < 0.8 || RUNNING_MUSIC) return;
+
+        RUNNING_MUSIC = true;
         var clip = $('<audio></audio>');
         clip.attr('src', AUDIO.xFiles);
         clip.attr('type', 'audio/mpeg');
@@ -246,11 +249,12 @@ $(document).ready(function() {
     }
 
     function toggleBackground() {
-        color = $('body').css('background');
-        if ($('body').css('background') == 'red') {
-            $('body').css('background', 'green');
-        } else if ($('body').css('background') == 'green') {
-            $('body').css('background', 'red');
+        var green = 'rgb(0, 128, 0)';
+        var red = 'rgb(255, 0, 0)';
+        if ($('body').css('background-color') == red) {
+            $('body').css('background-color', green);
+        } else if ($('body').css('background-color') == green) {
+            $('body').css('background-color', red);
         }
     }
 
@@ -312,6 +316,18 @@ $(document).ready(function() {
         }
     }
 
+    function skrillz() {
+        if (RUNNING_MUSIC) return;
+        RUNNING_MUSIC = true;
+
+        var ytlink = $('<iframe width="854" height="510" src="//www.youtube.com/embed/WSeNSzJ2-Jw?autoplay=1" frameborder="0" allowfullscreen></iframe>');
+        ytlink.addClass('easter');
+        ytlink.css('display', 'none');
+
+
+        $('body').append(ytlink);
+    }
+
     dewNav();
     setTimeout(function() {
         frogSetup();
@@ -322,6 +338,7 @@ $(document).ready(function() {
     yellowText();
     xFiles();
     buttonWombo();
+    skrillz();
     $(document).click(hitmark);
     $('body').css('background', 'red');
     setInterval(toggleBackground, 1100);
