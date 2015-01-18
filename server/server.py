@@ -33,7 +33,7 @@ def home():
     d['api_key'] = User.get_api_key(d['username'])
     d['childserver'] = User.get_child_droplet(username)
     d['loadmanager'] = User.get_loadmanager(username)
-    
+   
     # get dict of droplets on this account
     manager = digitalocean.Manager(token=session["access_token"])
     my_droplets = manager.get_all_droplets()
@@ -187,12 +187,12 @@ def spinup():
     region = 'nyc3'
     droplet_name = 'spinupslave'
     size = '512mb'
-    ipdaddr = None
+    ipaddr = "http://"
 
     for droplet in my_droplets:
         if droplet.name == loadmanager:
             size = droplet.size_slug
-            ipaddr = droplet.ip_address
+            ipaddr += droplet.ip_address
 
     images = manager.get_all_images()
     image_id = None
@@ -209,8 +209,22 @@ def spinup():
             size_slug=size,
             image=image_id,
             )
+
     new_droplet.create()
-    new_ipaddr = new_droplet.ip_address + ":9003"
+    dropid = new_droplet.id
+    url = "https://api.digitalocean.com/v2/droplets/" + str(dropid) 
+
+    headers = {'content-type': 'application/json',
+                'Authorization': 'Bearer ' + session['access_token'],
+            }
+
+    time.sleep(10)
+    
+    response = requests.get(url, headers=headers)
+    s = json.loads(response.text)
+
+
+    new_ipaddr = s['droplet']['networks']['v4'][0]['ip_address'] + ":9003"
     ipaddr += ":9002/service"
     t = "add-server"
 
