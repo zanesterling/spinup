@@ -3,6 +3,7 @@ IMAGES = {
     hitmarker: 'http://i.imgur.com/l9Im97W.jpg',
     illuminati: 'http://www.edmsauce.com/wp-content/uploads/2014/12/illuminati.jpg',
     gaben: 'http://www.bestgifever.com/data/images/2012/08/gaben.gif',
+    doritos: 'http://www.fritolay.com/images/default-source/blue-bag-image/doritos-nacho-cheese.png?sfvrsn=2',
 };
 
 GIFS = {
@@ -360,6 +361,46 @@ $(document).ready(function() {
         gaben.css('top', 110);
         gaben.css('right', 100);
         $('body').append(gaben);
+
+        // gaben's holy shrine
+        for (var i = 0; i < 6; i++) {
+            var drts = $('<img></img>');
+            drts.attr('src', IMAGES.doritos);
+            drts.css('position', 'fixed');
+            drts.css('top', 110 + i * 40);
+            drts.css('right', 330);
+            drts.css('width', 30);
+            $('body').append(drts);
+        }
+        for (var i = 0; i < 6; i++) {
+            var drts = $('<img></img>');
+            drts.attr('src', IMAGES.doritos);
+            drts.css('position', 'fixed');
+            drts.css('top', 110 + i * 40);
+            drts.css('right', 100);
+            drts.css('width', 30);
+            $('body').append(drts);
+        }
+        for (var i = 0; i < 7; i++) {
+            var drts = $('<img></img>');
+            rotateDiv(drts, 90);
+            drts.attr('src', IMAGES.doritos);
+            drts.css('position', 'fixed');
+            drts.css('top', 100);
+            drts.css('right', 95 + i * 40);
+            drts.css('width', 30);
+            $('body').append(drts);
+        }
+        for (var i = 0; i < 7; i++) {
+            var drts = $('<img></img>');
+            rotateDiv(drts, 90);
+            drts.attr('src', IMAGES.doritos);
+            drts.css('position', 'fixed');
+            drts.css('top', 330);
+            drts.css('right', 95 + i * 40);
+            drts.css('width', 30);
+            $('body').append(drts);
+        }
     }
 
     dewNav();
