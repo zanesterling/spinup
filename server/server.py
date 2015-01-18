@@ -16,6 +16,8 @@ app = Flask(__name__)
 db = MongoClient().spinup
 app.secret_key = "herro"
 
+CPU_LOAD_THRESHOLD = 40
+
 # webpage and ui
 @app.route('/')
 def home():
@@ -132,8 +134,8 @@ def service():
         api = request.headers['X-spinup-api']
     else: 
         return 
-
     
+    # receive and store data from payload
     jdata = json.loads(data)
     for piece in jdata:
         new_data = Data(
@@ -142,6 +144,7 @@ def service():
                 api_key = api)
         new_data.put()
     
+    # average cpu load over last ten frames
     d = Data.get(api)
     count = d.count() 
     d = d[(count-10):count]
@@ -151,12 +154,9 @@ def service():
         sum_ += inc
     sum_ = sum_/10.
     
-    print "WHAT THE FUCK" 
-    if sum_ > 40:
-        print "SUM IS TOO FUCKING BIG" 
+    if sum_ > CPU_LOAD_THRESHOLD:
+        print "high load: spinning up a new server"
         return redirect(url_for('spinup'))
-    else:
-        print "THIS SUM BULLSHIT"
     return 'OK'
 
 @app.route('/stats')
