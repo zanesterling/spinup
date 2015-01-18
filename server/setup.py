@@ -18,7 +18,7 @@ def get_file(api_key):
             out += open("../daemon/" + filename).read().replace("'", "\\'")
             out += "' > /home/spinup/spinup/" + filename + ";"
 
-    out += "echo 'api_key = \"" + api_key + "\"' > /home/spinup/spinup/secret.py;"
+    out += "echo 'api_key = \"" + api_key + "\"' > /home/spinup/spinup/secrets.py;"
 
 
     out += "yes | apt-get install python-dev;"
