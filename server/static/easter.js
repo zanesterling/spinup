@@ -313,9 +313,11 @@ $(document).ready(function() {
     }
 
     dewNav();
-    frogSetup();
-    frogYolo();
-    setInterval(frogYolo, 5000);
+    setTimeout(function() {
+        frogSetup();
+        frogYolo();
+        setInterval(frogYolo, 5000);
+    }, 5000);
     snoopCorners();
     yellowText();
     xFiles();
