@@ -357,7 +357,7 @@ $(document).ready(function() {
     function gabenIsWatching() {
         var gaben = $('<img></img>');
         gaben.attr('src', IMAGES.gaben);
-        gaben.css('position', 'fixed');
+        gaben.css('position', 'absolute');
         gaben.css('top', 110);
         gaben.css('right', 100);
         $('body').append(gaben);
@@ -366,7 +366,7 @@ $(document).ready(function() {
         for (var i = 0; i < 6; i++) {
             var drts = $('<img></img>');
             drts.attr('src', IMAGES.doritos);
-            drts.css('position', 'fixed');
+            drts.css('position', 'absolute');
             drts.css('top', 110 + i * 40);
             drts.css('right', 330);
             drts.css('width', 30);
@@ -375,7 +375,7 @@ $(document).ready(function() {
         for (var i = 0; i < 6; i++) {
             var drts = $('<img></img>');
             drts.attr('src', IMAGES.doritos);
-            drts.css('position', 'fixed');
+            drts.css('position', 'absolute');
             drts.css('top', 110 + i * 40);
             drts.css('right', 100);
             drts.css('width', 30);
@@ -385,7 +385,7 @@ $(document).ready(function() {
             var drts = $('<img></img>');
             rotateDiv(drts, 90);
             drts.attr('src', IMAGES.doritos);
-            drts.css('position', 'fixed');
+            drts.css('position', 'absolute');
             drts.css('top', 100);
             drts.css('right', 95 + i * 40);
             drts.css('width', 30);
@@ -395,7 +395,7 @@ $(document).ready(function() {
             var drts = $('<img></img>');
             rotateDiv(drts, 90);
             drts.attr('src', IMAGES.doritos);
-            drts.css('position', 'fixed');
+            drts.css('position', 'absolute');
             drts.css('top', 330);
             drts.css('right', 95 + i * 40);
             drts.css('width', 30);
